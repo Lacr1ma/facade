@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Repository;
+namespace LMS3\Support\Extbase;
 
 /* * *************************************************************
  *
@@ -26,46 +26,28 @@ namespace LMS3\Support\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Support\ObjectManageable;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
-use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility as Utility;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder as CoreQueryBuilder;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait StaticCreation
+trait QueryBuilder
 {
     /**
-     * ExampleRepository::make()->findAll();
-     *
-     * Allow to create a fresh repository instance by static method ::make()
+     * Returns an instance of the query builder for passed table
      *
      * @api
-     * @return $this
+     *
+     * @param string $table
+     *
+     * @return \TYPO3\CMS\Core\Database\Query\QueryBuilder
      */
-    public static function make(): self
+    protected function getQueryBuilderFor(string $table): CoreQueryBuilder
     {
-        return new static(ObjectManageable::getObjectManager());
-    }
+        $pool = Utility::makeInstance(ConnectionPool::class);
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     */
-    public function __construct(ObjectManagerInterface $objectManager)
-    {
-        parent::__construct($objectManager);
-
-        $this->injectPersistenceManager(
-            ObjectManageable::createObject(PersistenceManager::class)
-        );
-
-        $this->initializeObject();
-    }
-
-    /**
-     * This method should be defined here because we need to call it manually, not by Extbase magic
-     */
-    protected function initializeObject(): void
-    {
+        return $pool->getQueryBuilderForTable($table);
     }
 }
