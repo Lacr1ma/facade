@@ -58,7 +58,7 @@ class CRUDTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCas
     }
 
     /**
-     * @return void
+     * Cleanup the repository
      */
     public function tearDown(): void
     {
@@ -67,7 +67,6 @@ class CRUDTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCas
 
     /**
      * @test
-     * @return void
      */
     public function ensureProduced(): void
     {
@@ -83,7 +82,6 @@ class CRUDTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCas
 
     /**
      * @test
-     * @return void
      */
     public function ensureDestroyed(): void
     {
@@ -96,7 +94,6 @@ class CRUDTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCas
 
     /**
      * @test
-     * @return void
      */
     public function ensureUpgraded(): void
     {
@@ -111,7 +108,6 @@ class CRUDTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCas
 
     /**
      * @test
-     * @return void
      */
     public function ensurePersisted(): void
     {
@@ -127,7 +123,6 @@ class CRUDTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCas
 
     /**
      * @test
-     * @return void
      */
     public function ensureModelNameIsCorrect(): void
     {
@@ -136,7 +131,6 @@ class CRUDTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCas
 
     /**
      * @test
-     * @return void
      */
     public function returnFalseWhenDestroyObjectIsInvalid(): void
     {
@@ -147,7 +141,6 @@ class CRUDTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCas
 
     /**
      * @test
-     * @return void
      */
     public function returnFalseWhenColdNotBePersisted(): void
     {

@@ -36,7 +36,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 class ObjectManageableTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
     /**
-     * @return void
+     * Initialize
      */
     protected function setUp(): void
     {
@@ -47,7 +47,6 @@ class ObjectManageableTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
 
     /**
      * @test
-     * @return void
      */
     public function ensureObjectCanBeCreated(): void
     {
@@ -59,7 +58,6 @@ class ObjectManageableTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
 
     /**
      * @test
-     * @return void
      */
     public function ensureObjectManagerCouldBeRetrieved(): void
     {

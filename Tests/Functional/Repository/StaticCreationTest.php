@@ -38,7 +38,6 @@ class StaticCreationTest extends \TYPO3\TestingFramework\Core\Functional\Functio
 
     /**
      * @test
-     * @return void
      */
     public function ensureRepositoryCouldBeStaticallyCreated(): void
     {
@@ -47,7 +46,6 @@ class StaticCreationTest extends \TYPO3\TestingFramework\Core\Functional\Functio
 
     /**
      * @test
-     * @return void
      */
     public function ensureInitializeObjectHasBeenCalled(): void
     {

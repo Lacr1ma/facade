@@ -37,7 +37,7 @@ class PageTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     protected $trait;
 
     /**
-     * @return void
+     * Initialize Trait
      */
     public function setUp(): void
     {
@@ -49,7 +49,6 @@ class PageTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 
     /**
      * @test
-     * @return void
      */
     public function mutatorWorksProperly(): void
     {

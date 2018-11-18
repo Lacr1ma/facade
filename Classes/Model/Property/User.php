@@ -46,8 +46,6 @@ trait User
 
     /**
      * @param int $user
-     *
-     * @return void
      */
     public function setUser(int $user): void
     {
