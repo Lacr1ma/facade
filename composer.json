@@ -1,25 +1,26 @@
 {
-  "name": "lms3/support",
-  "type": "typo3-cms-extension",
-  "description": "Contains number of different helpers that could be used in the other extensions",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Sergey Borulko",
-      "email": "borulkosergey@icloud.com"
-    }
-  ],
-  "require": {
-    "typo3/cms-core": "^9.5"
-  },
-  "autoload": {
-    "psr-4": {
-      "LMS3\\Support\\": "Classes"
-    },
-    "autoload-dev": {
-      "psr-4": {
-        "LMS3\\Support\\Tests\\": "Tests"
-      }
-    }
-  }
+	"name": "lms3/support",
+	"type": "typo3-cms-extension",
+	"description": "Contains number of different helpers that could be used in the other extensions",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Sergey Borulko",
+			"email": "borulkosergey@icloud.com"
+		}
+	],
+	"require": {
+		"typo3/cms-core": "^9.5",
+		"nesbot/carbon": "^2"
+	},
+	"autoload": {
+		"psr-4": {
+			"LMS3\\Support\\": "Classes"
+		},
+		"autoload-dev": {
+			"psr-4": {
+				"LMS3\\Support\\Tests\\": "Tests"
+			}
+		}
+	}
 }
