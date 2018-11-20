@@ -26,8 +26,8 @@ namespace LMS3\Support\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use LMS3\Support\ObjectManageable;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility as Utility;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder as CoreQueryBuilder;
 
 /**
@@ -46,8 +46,17 @@ trait QueryBuilder
      */
     protected function getQueryBuilderFor(string $table): CoreQueryBuilder
     {
-        $pool = Utility::makeInstance(ConnectionPool::class);
+        return $this->getConnection()->getQueryBuilderForTable($table);
+    }
 
-        return $pool->getQueryBuilderForTable($table);
+    /**
+     * Returns an instance of connection pool
+     *
+     * @api
+     * @return \TYPO3\CMS\Core\Database\ConnectionPool
+     */
+    protected function getConnection(): ConnectionPool
+    {
+        return ObjectManageable::createObject(ConnectionPool::class);
     }
 }
