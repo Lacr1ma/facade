@@ -27,14 +27,14 @@ namespace LMS3\Support\Repository;
  * ************************************************************* */
 
 use LMS3\Support\Repository\CRUD as ProvidesCRUDActions;
-use LMS3\Support\{Extbase\TypoScriptConfiguration, Repository\StaticCreation};
+use LMS3\Support\{ObjectManageable, Extbase\QueryBuilder, Extbase\TypoScriptConfiguration};
 
 /**
  * @author Borulko Sergey <borulkosergey@icloud.com>
  */
 abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
-    use TypoScriptConfiguration, ProvidesCRUDActions, StaticCreation;
+    use TypoScriptConfiguration, ProvidesCRUDActions, StaticCreation, ObjectManageable, QueryBuilder;
 
     /**
      * Sets the defined Storage PID that is set in the TypoScript area
