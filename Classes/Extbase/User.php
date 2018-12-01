@@ -35,6 +35,29 @@ use TYPO3\CMS\Core\Context\{Context, Exception\AspectNotFoundException};
 trait User
 {
     /**
+     * Retrieve the current user session
+     *
+     * @param  string $key
+     *
+     * @return mixed
+     */
+    public static function session(string $key)
+    {
+        return $GLOBALS['TSFE']->fe_user->getKey('ses', $key);
+    }
+
+    /**
+     * Add new data to the user session
+     *
+     * @param  string $key
+     * @param  mixed  $value
+     */
+    public static function storeSession(string $key, $value): void
+    {
+        $GLOBALS['TSFE']->fe_user->setAndSaveSessionData($key, $value);
+    }
+
+    /**
      * Retrieve the currently logged in user identifier
      *
      * @return int
