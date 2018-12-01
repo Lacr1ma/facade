@@ -58,7 +58,7 @@ trait Dispatcher
      * Create the Extbase Dispatcher Instance
      *
      * @api
-     * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher|Object
+     * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
      */
     public function getDispatcherInstance(): ExtbaseDispatcher
     {
