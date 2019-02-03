@@ -11,8 +11,9 @@
 	],
 	"require": {
 		"typo3/cms-core": "^9.5",
+		"lms/routes": "*",
 		"nesbot/carbon": "^2",
-		"lms/routes": "*"
+		"tightenco/collect": "^5.7"
 	},
 	"autoload": {
 		"psr-4": {
