@@ -35,6 +35,18 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 abstract class AbstractApiController extends Base\ApiController
 {
     /**
+     * @param int $entity
+     */
+    public function showAction(int $entity): void
+    {
+        $this->checkAccess();
+
+        $this->view->setVariablesToRender([$this->getRootName()]);
+
+        $this->view->assign($this->getRootName(), [$this->getResourceRepository()->findByUid($entity)]);
+    }
+
+    /**
      * Just render all the existing items related to specific resource
      */
     public function listAction(): void
