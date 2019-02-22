@@ -37,8 +37,6 @@ trait ObjectManageable
     /**
      * Create object instance by provided Full Qualified Class Name
      *
-     * @api
-     *
      * @param  string $fqcn
      *
      * @return object
@@ -49,9 +47,8 @@ trait ObjectManageable
     }
 
     /**
-     * Initialize and return the TYPO3 Object Manager instance
+     * Get Object Manager Instance
      *
-     * @api
      * @return \TYPO3\CMS\Extbase\Object\ObjectManager
      */
     public static function getObjectManager(): ObjectManager

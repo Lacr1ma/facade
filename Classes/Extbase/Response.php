@@ -37,8 +37,6 @@ trait Response
     /**
      * Create the fresh instance of Response
      *
-     * @api
-     *
      * @param  string $content
      *
      * @return \Psr\Http\Message\ResponseInterface
@@ -55,7 +53,6 @@ trait Response
     /**
      * Tells us weather request related to JSON or not
      *
-     * @api
      * @return bool
      */
     public static function isJson(): bool

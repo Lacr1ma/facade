@@ -38,8 +38,6 @@ trait Redirect
     /**
      * Attempt to redirect user to requested page uid
      *
-     * @api
-     *
      * @param int $pid
      */
     public static function toPage(int $pid): void
@@ -52,8 +50,6 @@ trait Redirect
     /**
      * Attempt to redirect user to the passed URI
      *
-     * @api
-     *
      * @param string $uri
      * @param string $status
      */
@@ -64,8 +60,6 @@ trait Redirect
 
     /**
      * Create a uri Builder Instance
-     *
-     * @api
      *
      * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
      */

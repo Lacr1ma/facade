@@ -40,7 +40,6 @@ trait StaticCreation
      *
      * Allow to create a fresh repository instance by static method ::make()
      *
-     * @api
      * @return $this
      */
     public static function make(): self

@@ -38,8 +38,6 @@ trait QueryBuilder
     /**
      * Returns an instance of the query builder for passed table
      *
-     * @api
-     *
      * @param string $table
      *
      * @return \TYPO3\CMS\Core\Database\Query\QueryBuilder
@@ -52,7 +50,6 @@ trait QueryBuilder
     /**
      * Returns an instance of connection pool
      *
-     * @api
      * @return \TYPO3\CMS\Core\Database\ConnectionPool
      */
     protected function getConnection(): ConnectionPool

@@ -37,8 +37,6 @@ trait Dispatcher
     /**
      * Dispatches a signal by calling the registered Slot methods
      *
-     * @api
-     *
      * @param  string $class
      * @param  string $signalName
      * @param  array  $arguments
@@ -57,7 +55,6 @@ trait Dispatcher
     /**
      * Create the Extbase Dispatcher Instance
      *
-     * @api
      * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
      */
     public function getDispatcherInstance(): ExtbaseDispatcher

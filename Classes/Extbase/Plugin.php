@@ -37,8 +37,6 @@ trait Plugin
     /**
      * Retrieve the Plugin namespace based on extension and plugin.
      *
-     * @api
-     *
      * @param  string $extensionName
      * @param  string $pluginTitle
      *
@@ -51,8 +49,6 @@ trait Plugin
 
     /**
      * Retrieve the Plugin name by used extension, controller and action
-     *
-     * @api
      *
      * @param  string $extensionName
      * @param  string $controller

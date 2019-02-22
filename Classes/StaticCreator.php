@@ -32,7 +32,6 @@ namespace LMS3\Support;
 trait StaticCreator
 {
     /**
-     * @api
      * @return $this
      */
     public static function make(): self

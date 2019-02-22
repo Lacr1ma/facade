@@ -37,7 +37,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 trait CRUD
 {
     /**
-     * @param  AbstractEntity $object
+     * @param \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $object
      *
      * @return bool
      */
