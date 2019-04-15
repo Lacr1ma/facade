@@ -26,29 +26,32 @@ namespace LMS3\Support\Model\Property;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 trait Group
 {
     /**
-     * @var int
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup>
+     * @lazy
      */
     protected $group;
 
     /**
-     * @return int
+     * Initialize Group Storage
      */
-    public function getGroup(): int
+    public function initializeGroup(): void
     {
-        return $this->group;
+        $this->group = new ObjectStorage();
     }
 
     /**
-     * @param int $group
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
      */
-    public function setGroup(int $group): void
+    public function getGroup(): ObjectStorage
     {
-        $this->group = $group;
+        return $this->group;
     }
 }
