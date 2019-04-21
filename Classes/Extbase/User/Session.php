@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Extbase;
+namespace LMS3\Support\Extbase\User;
 
 /* * *************************************************************
  *
@@ -26,22 +26,31 @@ namespace LMS3\Support\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Support\Extbase\User\{Session, Redirect, StateContext};
-
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait User
+trait Session
 {
-    use StateContext, Session, Redirect;
+    /**
+     * Retrieve the current user session
+     *
+     * @param  string $key
+     *
+     * @return mixed
+     */
+    public static function session(string $key)
+    {
+        return $GLOBALS['TSFE']->fe_user->getKey('ses', $key);
+    }
 
     /**
-     * Retrieve the currently logged in user identifier
+     * Add new data to the user session
      *
-     * @return int
+     * @param  string $key
+     * @param  mixed  $value
      */
-    public static function currentUid(): int
+    public static function storeSession(string $key, $value): void
     {
-        return (int)$GLOBALS['TSFE']->fe_user->user['uid'];
+        $GLOBALS['TSFE']->fe_user->setAndSaveSessionData($key, $value);
     }
 }

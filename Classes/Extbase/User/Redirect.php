@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Extbase;
+namespace LMS3\Support\Extbase\User;
 
 /* * *************************************************************
  *
@@ -26,22 +26,29 @@ namespace LMS3\Support\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Support\Extbase\User\{Session, Redirect, StateContext};
+use TYPO3\CMS\Core\Utility\HttpUtility;
+use LMS3\Support\Extbase\Redirect as ExtbaseRedirect;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait User
+trait Redirect
 {
-    use StateContext, Session, Redirect;
+    use ExtbaseRedirect;
 
     /**
-     * Retrieve the currently logged in user identifier
-     *
-     * @return int
+     * Force redirect to Unauthorised Page
      */
-    public static function currentUid(): int
+    public static function redirectUnauthorised(): void
     {
-        return (int)$GLOBALS['TSFE']->fe_user->user['uid'];
+        ExtbaseRedirect::toUri('/401', HttpUtility::HTTP_STATUS_401);
+    }
+
+    /**
+     * Force redirect to Forbidden Page
+     */
+    public static function redirectForbidden(): void
+    {
+        ExtbaseRedirect::toUri('/403', HttpUtility::HTTP_STATUS_403);
     }
 }

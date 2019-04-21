@@ -26,22 +26,18 @@ namespace LMS3\Support\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Support\Extbase\User\{Session, Redirect, StateContext};
-
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait User
+trait Page
 {
-    use StateContext, Session, Redirect;
-
     /**
-     * Retrieve the currently logged in user identifier
+     * Get Current Page Identifier
      *
      * @return int
      */
-    public static function currentUid(): int
+    public static function current(): int
     {
-        return (int)$GLOBALS['TSFE']->fe_user->user['uid'];
+        return (int)$GLOBALS['TSFE']->id;
     }
 }

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Extbase;
+namespace LMS3\Support\Extbase\User;
 
 /* * *************************************************************
  *
@@ -26,22 +26,45 @@ namespace LMS3\Support\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Support\Extbase\User\{Session, Redirect, StateContext};
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Context\{Context, Exception\AspectNotFoundException};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait User
+trait StateContext
 {
-    use StateContext, Session, Redirect;
+    /**
+     * Determine whether user is logged in
+     *
+     * @return bool
+     */
+    public static function isLoggedIn(): bool
+    {
+        try {
+            return (bool)self::getTypo3Context()->getPropertyFromAspect('frontend.user', 'isLoggedIn');
+        } catch (AspectNotFoundException $e) {
+            return false;
+        }
+    }
 
     /**
-     * Retrieve the currently logged in user identifier
+     * Just syntax sugar
      *
-     * @return int
+     * @return bool
      */
-    public static function currentUid(): int
+    public static function isNotLoggedIn(): bool
     {
-        return (int)$GLOBALS['TSFE']->fe_user->user['uid'];
+        return !self::isLoggedIn();
+    }
+
+    /**
+     * Retrieve the Context Instance
+     *
+     * @return \TYPO3\CMS\Core\Context\Context
+     */
+    private static function getTypo3Context(): Context
+    {
+        return GeneralUtility::makeInstance(Context::class);
     }
 }
