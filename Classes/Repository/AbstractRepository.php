@@ -54,4 +54,20 @@ abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Reposit
      * @return string
      */
     abstract protected function getExtensionKey(): string;
+
+    /**
+     * Returns an array with initialized properties for requested record
+     *
+     * @param int    $uid
+     * @param string $table
+     *
+     * @return array
+     */
+    protected function findRaw(int $uid, string $table): array
+    {
+        $builder = self::getQueryBuilderFor($table);
+        $where = $builder->expr()->eq('uid', $uid);
+
+        return (array)$builder->select('*')->from($table)->where($where)->execute()->fetch();
+    }
 }

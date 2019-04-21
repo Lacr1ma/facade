@@ -38,4 +38,21 @@ trait StaticCreator
     {
         return new static();
     }
+
+    /**
+     * @param array  $properties
+     * @param object $entity
+     *
+     * @return $this
+     */
+    public static function makeWithProps(array $properties = [], object $entity = null): self
+    {
+        $entity = $entity ?: new static();
+
+        foreach ($properties as $propertyName => $propertyValue) {
+            $entity->_setProperty($propertyName, $propertyValue);
+        }
+
+        return $entity;
+    }
 }
