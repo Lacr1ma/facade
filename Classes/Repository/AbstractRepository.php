@@ -26,6 +26,7 @@ namespace LMS3\Support\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use Tightenco\Collect\Support\Collection;
 use LMS3\Support\Repository\CRUD as ProvidesCRUDActions;
 use LMS3\Support\{ObjectManageable, Extbase\QueryBuilder, Extbase\TypoScriptConfiguration};
 
@@ -69,5 +70,29 @@ abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Reposit
         $where = $builder->expr()->eq('uid', $uid);
 
         return (array)$builder->select('*')->from($table)->where($where)->execute()->fetch();
+    }
+
+    /**
+     * @param array $uidList
+     *
+     * @return \Tightenco\Collect\Support\Collection
+     */
+    public function findByIds(array $uidList): Collection
+    {
+        $entities = [];
+
+        foreach ($uidList as $uid) {
+            $entities[] = $this->findByUid((int)$uid);
+        }
+
+        return Collection::make($entities);
+    }
+
+    /**
+     * @return \Tightenco\Collect\Support\Collection
+     */
+    public function all(): Collection
+    {
+        return Collection::make($this->findAll()->toArray());
     }
 }

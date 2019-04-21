@@ -26,6 +26,8 @@ namespace LMS3\Support\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use LMS3\Support\StaticCreator;
+use Tightenco\Collect\Support\Collection;
 use LMS3\Support\Extbase\TypoScriptConfiguration;
 
 /**
@@ -33,26 +35,16 @@ use LMS3\Support\Extbase\TypoScriptConfiguration;
  */
 class PageRepository extends \TYPO3\CMS\Frontend\Page\PageRepository
 {
-    use TypoScriptConfiguration;
-
-    /**
-     * Simply create the Repository instance. Used as a useful facade
-     *
-     * @return $this
-     */
-    public static function make(): self
-    {
-        return new static();
-    }
+    use TypoScriptConfiguration, StaticCreator;
 
     /**
      * Find all sub pages for passed page
      *
      * @param int $page
      *
-     * @return array
+     * @return \Tightenco\Collect\Support\Collection
      */
-    public function findSubPages(int $page): array
+    public function findSubPages(int $page): Collection
     {
         $result = $this->getMenu($page, 'uid', '', 'nav_hide = 0');
 
@@ -60,9 +52,9 @@ class PageRepository extends \TYPO3\CMS\Frontend\Page\PageRepository
         foreach ($result as $record) {
             $uidList[] = $record['uid'];
 
-            $uidList = array_merge($uidList, $this->findSubPages($record['uid']));
+            $uidList = $this->findSubPages($record['uid'])->merge($uidList);
         }
 
-        return $uidList;
+        return Collection::make($uidList);
     }
 }
