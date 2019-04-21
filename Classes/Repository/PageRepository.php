@@ -48,11 +48,11 @@ class PageRepository extends \TYPO3\CMS\Frontend\Page\PageRepository
     {
         $result = $this->getMenu($page, 'uid', '', 'nav_hide = 0');
 
-        $uidList = [];
+        $uidList = Collection::make();
         foreach ($result as $record) {
             $uidList[] = $record['uid'];
 
-            $uidList = $this->findSubPages($record['uid'])->merge($uidList);
+            $uidList->merge($this->findSubPages($record['uid']));
         }
 
         return Collection::make($uidList);
