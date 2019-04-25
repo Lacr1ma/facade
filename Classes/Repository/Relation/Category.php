@@ -58,13 +58,13 @@ trait Category
      */
     public function findOneBy(int $category): Collection
     {
-        $entities = [];
+        $query = $this->createQuery();
 
-        foreach ($this->getRecordsFor($category) as $record) {
-            $entities[] = $this->findByUid($record['uid']);
-        }
+        $query->matching(
+            $query->contains('categories', $category)
+        );
 
-        return Collection::make($entities);
+        return Collection::make($query->execute()->toArray());
     }
 
     /**
