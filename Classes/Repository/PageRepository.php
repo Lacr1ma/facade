@@ -38,6 +38,22 @@ class PageRepository extends \TYPO3\CMS\Frontend\Page\PageRepository
     use TypoScriptConfiguration, StaticCreator;
 
     /**
+     * @param array $uidList
+     *
+     * @return \Tightenco\Collect\Support\Collection
+     */
+    public function findByIds(array $uidList): Collection
+    {
+        $pages = [];
+
+        foreach ($uidList as $uid) {
+            $pages[] = $this->getPage_noCheck((int)$uid);
+        }
+
+        return Collection::make($pages);
+    }
+
+    /**
      * Find all sub pages for passed page
      *
      * @param int $page
