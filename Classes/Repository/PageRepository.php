@@ -62,7 +62,7 @@ class PageRepository extends \TYPO3\CMS\Frontend\Page\PageRepository
      */
     public function findSubPages(int $page): Collection
     {
-        $result = $this->getMenu($page, 'uid', '', 'nav_hide = 0');
+        $result = $this->getMenu($page, 'uid', 'sorting', 'nav_hide = 0');
 
         $uidList = [];
         foreach ($result as $record) {
