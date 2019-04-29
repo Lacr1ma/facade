@@ -40,12 +40,12 @@ trait Category
      *
      * @return \Tightenco\Collect\Support\Collection
      */
-    public function findBy(array $categories): Collection
+    public function findByCategories(array $categories): Collection
     {
         $entities = [];
 
         foreach ($categories as $categoryId) {
-            $entities[] = $this->findOneBy((int)$categoryId);
+            $entities[] = $this->findOneByCategory((int)$categoryId);
         }
 
         return Collection::make($entities)->collapse()->unique();
@@ -56,7 +56,7 @@ trait Category
      *
      * @return \Tightenco\Collect\Support\Collection
      */
-    public function findOneBy(int $category): Collection
+    public function findOneByCategory(int $category): Collection
     {
         $query = $this->createQuery();
 
@@ -72,7 +72,7 @@ trait Category
      *
      * @return \TYPO3\CMS\Core\Collection\CollectionInterface
      */
-    protected function getRecordsFor(int $category): CollectionInterface
+    protected function getRecordsAssociatedWithCategory(int $category): CollectionInterface
     {
         return CategoryCollection::load($category, true, $this->getTable());
     }
