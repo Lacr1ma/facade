@@ -26,11 +26,15 @@ namespace LMS3\Support\Model\Property;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use LMS3\Support\Extbase\QueryBuilder;
+
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 trait User
 {
+    use QueryBuilder;
+
     /**
      * @var int
      */
@@ -50,5 +54,34 @@ trait User
     public function setUser(int $user): void
     {
         $this->user = $user;
+    }
+
+    /**
+     * @return array
+     */
+    public function fetchRawUser(): array
+    {
+        $builder = $this->getQueryBuilderFor('fe_users');
+
+        $constraints = [
+            $builder->expr()->eq('uid', $this->getUser()),
+        ];
+
+        return $builder
+            ->select('*')
+            ->from('fe_users')
+            ->where(...$constraints)
+            ->execute()
+            ->fetch();
+    }
+
+    /**
+     * @param string $property
+     *
+     * @return mixed
+     */
+    public function fetchUserProperty(string $property)
+    {
+        return $this->fetchRawUser()[$property];
     }
 }
