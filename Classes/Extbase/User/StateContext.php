@@ -63,7 +63,7 @@ trait StateContext
      *
      * @return \TYPO3\CMS\Core\Context\Context
      */
-    private static function getTypo3Context(): Context
+    public static function getTypo3Context(): Context
     {
         return GeneralUtility::makeInstance(Context::class);
     }

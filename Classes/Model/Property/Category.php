@@ -26,8 +26,8 @@ namespace LMS3\Support\Model\Property;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Support\Extbase\QueryBuilder;
 use Tightenco\Collect\Support\Collection;
+use LMS3\Support\Extbase\{User\StateContext, QueryBuilder};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -53,6 +53,7 @@ trait Category
 
         $constraints = [
             $builder->expr()->in('uid', $this->findRelations()->toArray()),
+            $builder->expr()->in('sys_language_uid', $this->getFrontendLanguage()),
         ];
 
         return Collection::make(
@@ -85,6 +86,14 @@ trait Category
                 ->execute()
                 ->fetchAll()
         )->add(0)->flatten();
+    }
+
+    /**
+     * @return int
+     */
+    private function getFrontendLanguage(): int
+    {
+        return (int)StateContext::getTypo3Context()->getPropertyFromAspect('language', 'id');
     }
 
     /**
