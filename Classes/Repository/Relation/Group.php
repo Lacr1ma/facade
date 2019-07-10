@@ -59,7 +59,7 @@ trait Group
         $query = $this->createQuery();
 
         try {
-            $constraints = $query->contains('group', [$group]);
+            $constraints = $query->contains($this->getGroupPropertyName(), [$group]);
         } catch (\Exception $e) {
             return [];
         }
@@ -75,10 +75,20 @@ trait Group
     public function findWithoutGroups(): Collection
     {
         $query = $this->createQuery();
-        $constraints = $query->equals('group', 0);
+        $constraints = $query->equals($this->getGroupPropertyName(), 0);
 
         return Collection::make(
             $query->matching($constraints)->execute()->toArray()
         );
+    }
+
+    /**
+     * Could be overwritten in certain cases, when property has different name
+     *
+     * @return string
+     */
+    protected function getGroupPropertyName(): string
+    {
+        return 'group';
     }
 }
