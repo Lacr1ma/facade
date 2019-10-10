@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Model\Property;
+namespace LMS3\Support\Extbase\View;
 
 /* * *************************************************************
  *
@@ -26,39 +26,38 @@ namespace LMS3\Support\Model\Property;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use Carbon\Carbon;
+use LMS3\Support\ObjectManageable;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait CreationDate
+trait HtmlView
 {
     /**
-     * @var int
+     * Renders the requested view
+     *
+     * @param string $templatePath
+     * @param array  $variables
+     *
+     * @return string
      */
-    protected $crdate;
-
-    /**
-     * @return int
-     */
-    public function getCrdate(): int
+    public function renderView(string $templatePath, array $variables = []): string
     {
-        return $this->crdate;
+        $view = $this->createView();
+
+        $view->setFormat('html');
+        $view->assignMultiple($variables);
+        $view->setTemplatePathAndFilename($templatePath);
+
+        return $view->render();
     }
 
     /**
-     * @param int $crdate
+     * @return \TYPO3\CMS\Fluid\View\StandaloneView
      */
-    public function setCrdate(int $crdate): void
+    public function createView(): StandaloneView
     {
-        $this->crdate = $crdate;
-    }
-
-    /**
-     * @return \Carbon\Carbon
-     */
-    public function getCreatedAt(): Carbon
-    {
-        return Carbon::createFromTimestamp($this->crdate);
+        return ObjectManageable::createObject(StandaloneView::class);
     }
 }
