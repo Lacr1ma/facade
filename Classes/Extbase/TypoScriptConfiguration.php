@@ -50,9 +50,23 @@ trait TypoScriptConfiguration
     }
 
     /**
+     * Retrieve the requested view configuration
+     *
+     * @param string $extensionKey
+     *
+     * @return array
+     */
+    public static function getView(string $extensionKey): array
+    {
+        $ts = self::retrieveFullTypoScriptConfigurationFor($extensionKey);
+
+        return (array)$ts['view.'] ?: [];
+    }
+
+    /**
      * Get TypoScript settings area from requested extension (tx_extensionKey.settings)
      *
-     * @param  string $extensionKey
+     * @param string $extensionKey
      *
      * @return array
      */
@@ -66,7 +80,7 @@ trait TypoScriptConfiguration
     /**
      *  Get all TypoScript definition for the requested extension (tx_extensionKey)
      *
-     * @param  string $extensionKey
+     * @param string $extensionKey
      *
      * @return array
      */

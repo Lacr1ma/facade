@@ -26,8 +26,8 @@ namespace LMS3\Support\Extbase\View;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Support\ObjectManageable;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use LMS3\Support\{ObjectManageable, Extbase\TypoScriptConfiguration};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -35,22 +35,25 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 trait HtmlView
 {
     /**
-     * Renders the requested view
-     *
-     * @param string $templatePath
+     * @param string $extensionKey // tx_support
+     * @param string $template
      * @param array  $variables
      *
-     * @return string
+     * @return \TYPO3\CMS\Fluid\View\StandaloneView
      */
-    public function renderView(string $templatePath, array $variables = []): string
+    public function getExtensionView(string $extensionKey, string $template, array $variables = []): StandaloneView
     {
         $view = $this->createView();
 
-        $view->setFormat('html');
-        $view->assignMultiple($variables);
-        $view->setTemplatePathAndFilename($templatePath);
+        $viewTS = TypoScriptConfiguration::getView($extensionKey);
 
-        return $view->render();
+        $view->setFormat('html');
+        $view->setLayoutRootPaths($viewTS['layoutRootPaths.'] ?: []);
+        $view->setPartialRootPaths($viewTS['partialRootPaths.'] ?: []);
+        $view->setTemplateRootPaths($viewTS['templateRootPaths.'] ?: []);
+        $view->setTemplate($template);
+
+        return $view->assignMultiple($variables);
     }
 
     /**

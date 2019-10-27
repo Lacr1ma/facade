@@ -77,30 +77,26 @@ abstract class AbstractApiController extends Base\ApiController
 
     /**
      * @param array $data
-     *
-     * @return string
      */
-    public function createAction(array $data): string
+    public function createAction(array $data): void
     {
         $this->checkAccess();
 
         $repository = $this->getResourceRepository();
 
-        return json_encode([
+        $this->view->assign('value', [
             'success' => $repository->persist($repository->produce($data))
         ]);
     }
 
     /**
      * @param \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $entity
-     *
-     * @return string
      */
-    public function destroyAction(AbstractEntity $entity): string
+    public function destroyAction(AbstractEntity $entity): void
     {
         $this->checkAccess();
 
-        return json_encode([
+        $this->view->assign('value', [
             'success' => $this->getResourceRepository()->destroy($entity)
         ]);
     }
