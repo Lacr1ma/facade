@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Extbase\View;
+namespace LMS3\Support\Model;
 
 /* * *************************************************************
  *
@@ -26,42 +26,53 @@ namespace LMS3\Support\Extbase\View;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use TYPO3\CMS\Fluid\View\StandaloneView;
-use LMS3\Support\{Extbase\ExtensionHelper, ObjectManageable, Extbase\TypoScriptConfiguration};
+use \TYPO3\CMS\Extbase\Persistence\Repository;
+use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait HtmlView
+trait StorageActions
 {
-    use ExtensionHelper;
-
     /**
-     * @param string $template
-     * @param array  $variables
-     *
-     * @return \TYPO3\CMS\Fluid\View\StandaloneView
+     * @return \TYPO3\CMS\Extbase\Persistence\Repository
      */
-    public function getExtensionView(string $template, array $variables = []): StandaloneView
+    public static function repository(): Repository
     {
-        $view = $this->createView();
+        $repository = ClassNamingUtility::translateModelNameToRepositoryName(get_called_class());
 
-        $viewTS = TypoScriptConfiguration::getView(self::extensionTypoScriptKey());
-
-        $view->setFormat('html');
-        $view->setLayoutRootPaths($viewTS['layoutRootPaths.'] ?: []);
-        $view->setPartialRootPaths($viewTS['partialRootPaths.'] ?: []);
-        $view->setTemplateRootPaths($viewTS['templateRootPaths.'] ?: []);
-        $view->setTemplate($template);
-
-        return $view->assignMultiple($variables);
+        return $repository::make();
     }
 
     /**
-     * @return \TYPO3\CMS\Fluid\View\StandaloneView
+     * @param array $properties
+     *
+     * @return \LMS3\Support\Model\AbstractModel
      */
-    public function createView(): StandaloneView
+    public static function create(array $properties = []): AbstractModel
     {
-        return ObjectManageable::createObject(StandaloneView::class);
+        $entity = self::repository()->produce($properties);
+        $entity->save();
+
+        return $entity;
+    }
+
+    /**
+     * Persists the new entity or updates it
+     */
+    public function save(): void
+    {
+        $this->_isNew() ?
+            self::repository()->persist($this) : self::repository()->upgrade($this);
+    }
+
+    /**
+     *  Remove entity from database
+     *
+     * @return bool
+     */
+    public function delete(): bool
+    {
+        return self::repository()->destroy($this);
     }
 }

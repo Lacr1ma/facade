@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Extbase\View;
+namespace LMS3\Support\Extbase;
 
 /* * *************************************************************
  *
@@ -26,42 +26,55 @@ namespace LMS3\Support\Extbase\View;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use TYPO3\CMS\Fluid\View\StandaloneView;
-use LMS3\Support\{Extbase\ExtensionHelper, ObjectManageable, Extbase\TypoScriptConfiguration};
-
 /**
+ * @usage  self::extensionTypoScriptKey()
+ * @usage  self::extensionExtbaseKey()
+ * @usage  self::extensionNamespace()
+ *
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait HtmlView
+trait ExtensionHelper
 {
-    use ExtensionHelper;
-
     /**
-     * @param string $template
-     * @param array  $variables
+     * Input: \LMS3\Support\Extbase\ExtensionHelper'
+     * Output: Support
      *
-     * @return \TYPO3\CMS\Fluid\View\StandaloneView
+     * @return string
      */
-    public function getExtensionView(string $template, array $variables = []): StandaloneView
+    public static function extensionExtbaseKey(): string
     {
-        $view = $this->createView();
+        $namespaceParts = self::extensionNamespace();
 
-        $viewTS = TypoScriptConfiguration::getView(self::extensionTypoScriptKey());
-
-        $view->setFormat('html');
-        $view->setLayoutRootPaths($viewTS['layoutRootPaths.'] ?: []);
-        $view->setPartialRootPaths($viewTS['partialRootPaths.'] ?: []);
-        $view->setTemplateRootPaths($viewTS['templateRootPaths.'] ?: []);
-        $view->setTemplate($template);
-
-        return $view->assignMultiple($variables);
+        return array_shift(
+            array_slice($namespaceParts, 1, 1)
+        );
     }
 
     /**
-     * @return \TYPO3\CMS\Fluid\View\StandaloneView
+     * Input: Support
+     * Output: tx_support
+     *
+     * @return string
      */
-    public function createView(): StandaloneView
+    public static function extensionTypoScriptKey(): string
     {
-        return ObjectManageable::createObject(StandaloneView::class);
+        return 'tx_' . strtolower(self::extensionExtbaseKey());
+    }
+
+    /**
+     * Input: \LMS3\Support\Extbase\ExtensionHelper'
+     * Output:
+     *  [
+     *      0 => 'LMS3',
+     *      1 => 'Support',
+     *      2 => 'Extbase',
+     *      3 => 'ExtensionHelper'
+     *  ]
+     *
+     * @return array
+     */
+    public static function extensionNamespace(): array
+    {
+        return explode('\\', get_called_class());
     }
 }

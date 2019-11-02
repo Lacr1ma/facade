@@ -28,14 +28,14 @@ namespace LMS3\Support\Repository;
 
 use Tightenco\Collect\Support\Collection;
 use LMS3\Support\Repository\CRUD as ProvidesCRUDActions;
-use LMS3\Support\{ObjectManageable, Extbase\QueryBuilder, Extbase\TypoScriptConfiguration};
+use LMS3\Support\{ObjectManageable, Extbase\QueryBuilder, Extbase\TypoScriptConfiguration, Extbase\ExtensionHelper};
 
 /**
  * @author Borulko Sergey <borulkosergey@icloud.com>
  */
 abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
-    use TypoScriptConfiguration, ProvidesCRUDActions, StaticCreation, ObjectManageable, QueryBuilder;
+    use TypoScriptConfiguration, ProvidesCRUDActions, StaticCreation, ObjectManageable, QueryBuilder, ExtensionHelper;
 
     /**
      * Sets the defined Storage PID that is set in the TypoScript area
@@ -50,11 +50,12 @@ abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Reposit
     }
 
     /**
-     * Should return the extension key. Example: tx_support
-     *
      * @return string
      */
-    abstract protected function getExtensionKey(): string;
+    protected function getExtensionKey(): string
+    {
+        return self::extensionTypoScriptKey();
+    }
 
     /**
      * Returns an array with initialized properties for requested record
