@@ -43,6 +43,10 @@ trait CRUD
      */
     public function destroy(AbstractEntity $object = null): bool
     {
+        if (!$object) {
+            return false;
+        }
+
         try {
             $this->remove($object);
         } catch (\Exception $e) {
@@ -55,7 +59,7 @@ trait CRUD
     }
 
     /**
-     * @param  \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $object
+     * @param \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $object
      *
      * @return \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
@@ -73,7 +77,7 @@ trait CRUD
     }
 
     /**
-     * @param  array $properties
+     * @param array $properties
      *
      * @return \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
@@ -118,6 +122,7 @@ trait CRUD
     }
 
     /**
+     * @psalm-suppress MoreSpecificReturnType
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
      */
     private function getPersistenceManager(): PersistenceManager

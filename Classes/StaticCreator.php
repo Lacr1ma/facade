@@ -40,6 +40,8 @@ trait StaticCreator
     }
 
     /**
+     * @psalm-suppress MoreSpecificReturnType
+     *
      * @param array  $properties
      * @param object $entity
      *

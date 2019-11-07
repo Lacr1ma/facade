@@ -44,10 +44,9 @@ trait ExtensionHelper
     public static function extensionExtbaseKey(): string
     {
         $namespaceParts = self::extensionNamespace();
+        $className = array_slice($namespaceParts, 1, 1);
 
-        return array_shift(
-            array_slice($namespaceParts, 1, 1)
-        );
+        return array_shift($className);
     }
 
     /**

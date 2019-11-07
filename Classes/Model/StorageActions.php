@@ -36,6 +36,8 @@ trait StorageActions
 {
     /**
      * @return \TYPO3\CMS\Extbase\Persistence\Repository
+     *
+     * @psalm-suppress InvalidStringClass
      */
     public static function repository(): Repository
     {
@@ -59,6 +61,8 @@ trait StorageActions
 
     /**
      * Persists the new entity or updates it
+     *
+     * @psalm-suppress InternalMethod
      */
     public function save(): void
     {

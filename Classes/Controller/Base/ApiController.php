@@ -55,7 +55,7 @@ abstract class ApiController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
     /**
      * Should return the Repository of the Resource
      *
-     * @return \LMS3\Support\Repository\AbstractRepository
+     * @return \TYPO3\CMS\Extbase\Persistence\RepositoryInterface
      */
     abstract protected function getResourceRepository(): RepositoryInterface;
 
