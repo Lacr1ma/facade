@@ -49,9 +49,9 @@ trait StorageActions
     /**
      * @param array $properties
      *
-     * @return \LMS3\Support\Model\AbstractModel
+     * @return self
      */
-    public static function create(array $properties = []): AbstractModel
+    public static function create(array $properties = []): self
     {
         $entity = self::repository()->produce($properties);
         $entity->save();
