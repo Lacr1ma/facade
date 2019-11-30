@@ -26,8 +26,8 @@ namespace LMS3\Support\Controller\Base;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Support\Extbase\{User, Response, Action\CouldReturnPsrResponse};
 use TYPO3\CMS\Extbase\Persistence\RepositoryInterface;
+use LMS3\Support\Extbase\{User, Response, Action\CouldReturnPsrResponse};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -42,12 +42,12 @@ abstract class ApiController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
     public $view;
 
     /**
-     * Deny the request if user is not logged in or denied by endpoint
+     * Deny the request if denied by endpoint
      * InitializeAction will not work in that case, because we need to use forward
      */
     public function checkAccess(): void
     {
-        if (User::isNotLoggedIn() || !$this->isAllowed($this->request->getArguments())) {
+        if (!$this->isAllowed($this->request->getArguments())) {
             $this->forward('fail', null, null, ['message' => 'Access denied']);
         }
     }
@@ -60,8 +60,8 @@ abstract class ApiController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
     abstract protected function getResourceRepository(): RepositoryInterface;
 
     /**
-     * @see setVariablesToRender()
      * @return string
+     * @see setVariablesToRender()
      */
     abstract protected function getRootName(): string;
 
