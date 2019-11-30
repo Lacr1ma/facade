@@ -27,6 +27,7 @@ namespace LMS3\Support\Extbase;
  * ************************************************************* */
 
 use LMS3\Support\ObjectManageable;
+use TYPO3\CMS\Core\Registry as CoreRegistry;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -114,8 +115,8 @@ class Registry
     /**
      * @return \TYPO3\CMS\Core\Registry
      */
-    public static function registry(): \TYPO3\CMS\Core\Registry
+    public static function registry(): CoreRegistry
     {
-        return ObjectManageable::createObject(Registry::class);
+        return ObjectManageable::createObject(CoreRegistry::class);
     }
 }
