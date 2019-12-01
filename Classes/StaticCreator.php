@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support;
+namespace LMS\Facade;
 
 /* * *************************************************************
  *
@@ -42,14 +42,13 @@ trait StaticCreator
     /**
      * @psalm-suppress MoreSpecificReturnType
      *
-     * @param array  $properties
-     * @param object $entity
+     * @param array $properties
      *
      * @return $this
      */
-    public static function makeWithProps(array $properties = [], object $entity = null): self
+    public static function makeWithProps(array $properties = []): self
     {
-        $entity = $entity ?: new static();
+        $entity = new static();
 
         foreach ($properties as $propertyName => $propertyValue) {
             $entity->_setProperty($propertyName, $propertyValue);

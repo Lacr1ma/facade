@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Tests\Unit;
+namespace LMS\Facade\Tests\Unit;
 
 /* * *************************************************************
  *
@@ -26,7 +26,7 @@ namespace LMS3\Support\Tests\Unit;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Support\ObjectManageable;
+use LMS\Facade\ObjectManageable;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 

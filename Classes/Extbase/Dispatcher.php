@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Extbase;
+namespace LMS\Facade\Extbase;
 
 /* * *************************************************************
  *
@@ -32,7 +32,7 @@ use TYPO3\CMS\Extbase\SignalSlot\Dispatcher as ExtbaseDispatcher;
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait Dispatcher
+class Dispatcher
 {
     /**
      * Dispatches a signal by calling the registered Slot methods
@@ -43,10 +43,10 @@ trait Dispatcher
      *
      * @return mixed
      */
-    public function emit(string $class, string $signalName, array $arguments = [])
+    public static function emit(string $class, string $signalName, array $arguments = [])
     {
         try {
-            return $this->getDispatcherInstance()->dispatch($class, $signalName, $arguments);
+            return self::getDispatcherInstance()->dispatch($class, $signalName, $arguments);
         } catch (\Exception $e) {
             return false;
         }
@@ -56,9 +56,10 @@ trait Dispatcher
      * Create the Extbase Dispatcher Instance
      *
      * @psalm-suppress MoreSpecificReturnType
+     * @psalm-suppress LessSpecificReturnStatement
      * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
      */
-    public function getDispatcherInstance(): ExtbaseDispatcher
+    public static function getDispatcherInstance(): ExtbaseDispatcher
     {
         return GeneralUtility::makeInstance(ExtbaseDispatcher::class);
     }

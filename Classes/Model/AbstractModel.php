@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Model;
+namespace LMS\Facade\Model;
 
 /* * *************************************************************
  *
@@ -26,7 +26,7 @@ namespace LMS3\Support\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Support\Extbase\{ExtensionHelper, TypoScriptConfiguration};
+use LMS\Facade\Extbase\{ExtensionHelper, TypoScriptConfiguration};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>

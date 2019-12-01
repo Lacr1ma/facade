@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Tests\Unit\Model\Property;
+namespace LMS\Facade\Tests\Unit\Model\Property;
 
 /* * *************************************************************
  *
@@ -26,7 +26,7 @@ namespace LMS3\Support\Tests\Unit\Model\Property;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Support\Model\Property\User as ContainsUser;
+use LMS\Facade\Model\Property\User as ContainsUser;
 
 /**
  * @author Borulko Sergey <borulkosergey@icloud.com>

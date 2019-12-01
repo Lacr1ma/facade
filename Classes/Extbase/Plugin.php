@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Extbase;
+namespace LMS\Facade\Extbase;
 
 /* * *************************************************************
  *
@@ -26,19 +26,21 @@ namespace LMS3\Support\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Support\ObjectManageable;
+use LMS\Facade\ObjectManageable;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait Plugin
+class Plugin
 {
     /**
      * Retrieve the Plugin namespace based on extension and plugin.
      *
-     * @param  string $extensionName
-     * @param  string $pluginTitle
+     * @psalm-suppress InternalMethod
+     *
+     * @param string $extensionName
+     * @param string $pluginTitle
      *
      * @return string
      */
@@ -50,9 +52,11 @@ trait Plugin
     /**
      * Retrieve the Plugin name by used extension, controller and action
      *
-     * @param  string $extensionName
-     * @param  string $controller
-     * @param  string $action
+     * @psalm-suppress InternalMethod
+     *
+     * @param string $extensionName
+     * @param string $controller
+     * @param string $action
      *
      * @return string
      */
@@ -69,9 +73,11 @@ trait Plugin
     /**
      * Returns the Extension Service
      *
+     * @psalm-suppress MoreSpecificReturnType
+     * @psalm-suppress LessSpecificReturnStatement
      * @return \TYPO3\CMS\Extbase\Service\ExtensionService
      */
-    private static function getExtensionService(): ExtensionService
+    public static function getExtensionService(): ExtensionService
     {
         return ObjectManageable::createObject(ExtensionService::class);
     }

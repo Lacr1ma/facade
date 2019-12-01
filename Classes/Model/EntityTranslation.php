@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Model;
+namespace LMS\Facade\Model;
 
 /* * *************************************************************
  *
@@ -26,26 +26,26 @@ namespace LMS3\Support\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Support\Extbase\QueryBuilder;
-use LMS3\Support\Extbase\User\StateContext;
+use LMS\Facade\Extbase\{QueryBuilder, User\StateContext};
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait EntityTranslation
+class EntityTranslation
 {
-    use QueryBuilder;
-
     /**
+     * @psalm-suppress PossiblyInvalidMethodCall
+     *
      * @param int    $uid
      * @param int    $language
      * @param string $table
      *
      * @return mixed
      */
-    public function findEntityForLanguage(int $uid, int $language, string $table)
+    public static function findEntityForLanguage(int $uid, int $language, string $table)
     {
-        $builder = $this->getQueryBuilderFor($table);
+        $builder = QueryBuilder::getQueryBuilderFor($table);
 
         $constraints = [
             $builder->expr()->eq('l10n_parent', $uid),
@@ -66,16 +66,20 @@ trait EntityTranslation
      *
      * @return mixed
      */
-    public function findEntityForFrontendLanguage(int $uid, string $table)
+    public static function findEntityForFrontendLanguage(int $uid, string $table)
     {
-        return $this->findEntityForLanguage($uid, $this->getFrontendLanguage(), $table);
+        return self::findEntityForLanguage($uid, self::getFrontendLanguage(), $table);
     }
 
     /**
      * @return int
      */
-    public function getFrontendLanguage(): int
+    public static function getFrontendLanguage(): int
     {
-        return (int)StateContext::getTypo3Context()->getPropertyFromAspect('language', 'id');
+        try {
+            return (int)StateContext::getTypo3Context()->getPropertyFromAspect('language', 'id');
+        } catch (AspectNotFoundException $e) {
+            return 0;
+        }
     }
 }

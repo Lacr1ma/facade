@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Repository;
+namespace LMS\Facade\Repository;
 
 /* * *************************************************************
  *
@@ -26,16 +26,17 @@ namespace LMS3\Support\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Support\StaticCreator;
+use LMS\Facade\StaticCreator;
 use Tightenco\Collect\Support\Collection;
-use LMS3\Support\Extbase\TypoScriptConfiguration;
 
 /**
- * @author Borulko Sergey <borulkosergey@icloud.com>
+ * @psalm-suppress PropertyNotSetInConstructor
+ *
+ * @author         Borulko Sergey <borulkosergey@icloud.com>
  */
 class PageRepository extends \TYPO3\CMS\Frontend\Page\PageRepository
 {
-    use TypoScriptConfiguration, StaticCreator;
+    use StaticCreator;
 
     /**
      * @param array $uidList

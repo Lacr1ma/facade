@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Controller\Base;
+namespace LMS\Facade\Controller\Base;
 
 /* * *************************************************************
  *
@@ -27,14 +27,14 @@ namespace LMS3\Support\Controller\Base;
  * ************************************************************* */
 
 use TYPO3\CMS\Extbase\Persistence\RepositoryInterface;
-use LMS3\Support\Extbase\{User, Response, Action\CouldReturnPsrResponse};
+use LMS\Facade\Extbase\Action\CouldReturnPsrResponse;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 abstract class ApiController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
-    use User, CouldReturnPsrResponse, Response;
+    use CouldReturnPsrResponse;
 
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\View\JsonView

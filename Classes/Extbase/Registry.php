@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Extbase;
+namespace LMS\Facade\Extbase;
 
 /* * *************************************************************
  *
@@ -26,7 +26,7 @@ namespace LMS3\Support\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Support\ObjectManageable;
+use LMS\Facade\ObjectManageable;
 use TYPO3\CMS\Core\Registry as CoreRegistry;
 
 /**
@@ -73,8 +73,6 @@ class Registry
      * @param string $namespace
      * @param string $key
      * @param mixed  $value
-     *
-     * @return mixed
      */
     public static function set(string $namespace, string $key, $value): void
     {
@@ -113,6 +111,8 @@ class Registry
     }
 
     /**
+     * @psalm-suppress MoreSpecificReturnType
+     * @psalm-suppress LessSpecificReturnStatement
      * @return \TYPO3\CMS\Core\Registry
      */
     public static function registry(): CoreRegistry

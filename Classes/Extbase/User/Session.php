@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Extbase\User;
+namespace LMS\Facade\Extbase\User;
 
 /* * *************************************************************
  *
@@ -29,7 +29,7 @@ namespace LMS3\Support\Extbase\User;
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait Session
+class Session
 {
     /**
      * Retrieve the current user session

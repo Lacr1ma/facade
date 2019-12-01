@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Extbase;
+namespace LMS\Facade\Extbase;
 
 /* * *************************************************************
  *
@@ -26,15 +26,11 @@ namespace LMS3\Support\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Support\Extbase\User\{Session, Redirect, StateContext};
-
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait User
+class User
 {
-    use StateContext, Session, Redirect;
-
     /**
      * Retrieve the currently logged in user identifier
      *

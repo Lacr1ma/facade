@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\ViewHelpers;
+namespace LMS\Facade\ViewHelpers;
 
 /* * *************************************************************
  *
@@ -26,21 +26,21 @@ namespace LMS3\Support\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Support\Model\EntityTranslation;
+use LMS\Facade\Model\EntityTranslation;
 
 /**
- * @author Borulko Sergey <borulkosergey@icloud.com>
+ * @psalm-suppress PropertyNotSetInConstructor
+ *
+ * @author         Borulko Sergey <borulkosergey@icloud.com>
  */
 class PageViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\PageViewHelper
 {
-    use EntityTranslation;
-
     /**
      * @return string
      */
     public function render(): string
     {
-        if ($page = $this->findEntityForFrontendLanguage((int)$this->arguments['pageUid'], 'pages')) {
+        if ($page = EntityTranslation::findEntityForFrontendLanguage((int)$this->arguments['pageUid'], 'pages')) {
             $this->arguments['pageUid'] = $page;
         }
 

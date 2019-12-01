@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Extbase;
+namespace LMS\Facade\Extbase;
 
 /* * *************************************************************
  *
@@ -26,14 +26,14 @@ namespace LMS3\Support\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Support\ObjectManageable;
+use LMS\Facade\ObjectManageable;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder as CoreQueryBuilder;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait QueryBuilder
+class QueryBuilder
 {
     /**
      * Returns an instance of the query builder for passed table
@@ -42,17 +42,19 @@ trait QueryBuilder
      *
      * @return \TYPO3\CMS\Core\Database\Query\QueryBuilder
      */
-    protected function getQueryBuilderFor(string $table): CoreQueryBuilder
+    public static function getQueryBuilderFor(string $table): CoreQueryBuilder
     {
-        return $this->getConnection()->getQueryBuilderForTable($table);
+        return self::getConnection()->getQueryBuilderForTable($table);
     }
 
     /**
      * Returns an instance of connection pool
      *
+     * @psalm-suppress MoreSpecificReturnType
+     * @psalm-suppress LessSpecificReturnStatement
      * @return \TYPO3\CMS\Core\Database\ConnectionPool
      */
-    protected function getConnection(): ConnectionPool
+    public static function getConnection(): ConnectionPool
     {
         return ObjectManageable::createObject(ConnectionPool::class);
     }

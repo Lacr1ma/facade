@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Extbase;
+namespace LMS\Facade\Extbase;
 
 /* * *************************************************************
  *
@@ -26,14 +26,14 @@ namespace LMS3\Support\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Support\ObjectManageable;
-use TYPO3\CMS\Extbase\Configuration\{ConfigurationManager, ConfigurationManagerInterface as Configuration};
+use LMS\Facade\ObjectManageable;
 use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
+use TYPO3\CMS\Extbase\Configuration\{ConfigurationManager, ConfigurationManagerInterface as Configuration};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait TypoScriptConfiguration
+class TypoScriptConfiguration
 {
     /**
      * Retrieve the storage page for requested extension
@@ -70,7 +70,7 @@ trait TypoScriptConfiguration
      *
      * @return array
      */
-    public static function getSettings(string $extensionKey = 'tx_support'): array
+    public static function getSettings(string $extensionKey = 'tx_facade'): array
     {
         $ts = self::retrieveFullTypoScriptConfigurationFor($extensionKey);
 
@@ -79,6 +79,8 @@ trait TypoScriptConfiguration
 
     /**
      *  Get all TypoScript definition for the requested extension (tx_extensionKey)
+     *
+     * @psalm-suppress InternalMethod
      *
      * @param string $extensionKey
      *
@@ -98,6 +100,9 @@ trait TypoScriptConfiguration
 
     /**
      * Returns the Configuration Manager instance
+     *
+     * @psalm-suppress MoreSpecificReturnType
+     * @psalm-suppress LessSpecificReturnStatement
      *
      * @return \TYPO3\CMS\Extbase\Configuration\ConfigurationManager
      */

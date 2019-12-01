@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Extbase\User;
+namespace LMS\Facade\Extbase\User;
 
 /* * *************************************************************
  *
@@ -27,15 +27,13 @@ namespace LMS3\Support\Extbase\User;
  * ************************************************************* */
 
 use TYPO3\CMS\Core\Utility\HttpUtility;
-use LMS3\Support\Extbase\Redirect as ExtbaseRedirect;
+use LMS\Facade\Extbase\Redirect as ExtbaseRedirect;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait Redirect
+class Redirect
 {
-    use ExtbaseRedirect;
-
     /**
      * Force redirect to Unauthorised Page
      */

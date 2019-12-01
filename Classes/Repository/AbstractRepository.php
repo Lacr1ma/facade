@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Repository;
+namespace LMS\Facade\Repository;
 
 /* * *************************************************************
  *
@@ -27,15 +27,16 @@ namespace LMS3\Support\Repository;
  * ************************************************************* */
 
 use Tightenco\Collect\Support\Collection;
-use LMS3\Support\Repository\CRUD as ProvidesCRUDActions;
-use LMS3\Support\{ObjectManageable, Extbase\QueryBuilder, Extbase\TypoScriptConfiguration, Extbase\ExtensionHelper};
+use LMS\Facade\Repository\CRUD as ProvidesCRUDActions;
+use LMS\Facade\{Extbase\QueryBuilder, Extbase\TypoScriptConfiguration, Extbase\ExtensionHelper};
 
 /**
- * @author Borulko Sergey <borulkosergey@icloud.com>
+ * @psalm-suppress PropertyNotSetInConstructor
+ * @author         Borulko Sergey <borulkosergey@icloud.com>
  */
 abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
-    use TypoScriptConfiguration, ProvidesCRUDActions, StaticCreation, ObjectManageable, QueryBuilder, ExtensionHelper;
+    use ProvidesCRUDActions, StaticCreation, ExtensionHelper;
 
     /**
      * Sets the defined Storage PID that is set in the TypoScript area
@@ -60,6 +61,8 @@ abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Reposit
     /**
      * Returns an array with initialized properties for requested record
      *
+     * @psalm-suppress PossiblyInvalidMethodCall
+     *
      * @param int    $uid
      * @param string $table
      *
@@ -67,7 +70,7 @@ abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Reposit
      */
     protected function findRaw(int $uid, string $table): array
     {
-        $builder = self::getQueryBuilderFor($table);
+        $builder = QueryBuilder::getQueryBuilderFor($table);
         $where = $builder->expr()->eq('uid', $uid);
 
         return (array)$builder->select('*')->from($table)->where($where)->execute()->fetch();
@@ -90,6 +93,7 @@ abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Reposit
     }
 
     /**
+     * @psalm-suppress PossiblyInvalidMethodCall
      * @return \Tightenco\Collect\Support\Collection
      */
     public function all(): Collection

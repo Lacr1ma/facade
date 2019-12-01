@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Extbase\User;
+namespace LMS\Facade\Extbase\User;
 
 /* * *************************************************************
  *
@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Context\{Context, Exception\AspectNotFoundException};
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait StateContext
+class StateContext
 {
     /**
      * Determine whether user is logged in
@@ -61,6 +61,8 @@ trait StateContext
     /**
      * Retrieve the Context Instance
      *
+     * @psalm-suppress LessSpecificReturnStatement
+     * @psalm-suppress MoreSpecificReturnType
      * @return \TYPO3\CMS\Core\Context\Context
      */
     public static function getTypo3Context(): Context

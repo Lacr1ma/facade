@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Model\Property;
+namespace LMS\Facade\Model\Property;
 
 /* * *************************************************************
  *
@@ -27,15 +27,14 @@ namespace LMS3\Support\Model\Property;
  * ************************************************************* */
 
 use Tightenco\Collect\Support\Collection;
-use LMS3\Support\Extbase\{User\StateContext, QueryBuilder};
+use LMS\Facade\Extbase\{User\StateContext, QueryBuilder};
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 trait Category
 {
-    use QueryBuilder;
-
     /**
      * @return \Tightenco\Collect\Support\Collection
      */
@@ -49,7 +48,7 @@ trait Category
      */
     private function findCategories(): Collection
     {
-        $builder = $this->getQueryBuilderFor('sys_category');
+        $builder = QueryBuilder::getQueryBuilderFor('sys_category');
 
         $constraints = [
             $builder->expr()->in('uid', $this->findRelations()->toArray()),
@@ -71,7 +70,7 @@ trait Category
      */
     private function findRelations(): Collection
     {
-        $builder = $this->getQueryBuilderFor('sys_category_record_mm');
+        $builder = QueryBuilder::getQueryBuilderFor('sys_category_record_mm');
 
         $constraints = [
             $builder->expr()->eq('uid_foreign', $builder->createNamedParameter($this->getUid(), \PDO::PARAM_INT)),
@@ -93,7 +92,11 @@ trait Category
      */
     private function getFrontendLanguage(): int
     {
-        return (int)StateContext::getTypo3Context()->getPropertyFromAspect('language', 'id');
+        try {
+            return (int)StateContext::getTypo3Context()->getPropertyFromAspect('language', 'id');
+        } catch (AspectNotFoundException $e) {
+            return 0;
+        }
     }
 
     /**

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support;
+namespace LMS\Facade;
 
 /* * *************************************************************
  *
@@ -32,7 +32,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait ObjectManageable
+class ObjectManageable
 {
     /**
      * Create object instance by provided Full Qualified Class Name
@@ -49,6 +49,8 @@ trait ObjectManageable
     /**
      * Get Object Manager Instance
      *
+     * @psalm-suppress MoreSpecificReturnType
+     * @psalm-suppress LessSpecificReturnStatement
      * @return \TYPO3\CMS\Extbase\Object\ObjectManager
      */
     public static function getObjectManager(): ObjectManager

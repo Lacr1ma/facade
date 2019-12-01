@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Model\Property;
+namespace LMS\Facade\Model\Property;
 
 /* * *************************************************************
  *
@@ -26,15 +26,13 @@ namespace LMS3\Support\Model\Property;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Support\Extbase\QueryBuilder;
+use LMS\Facade\Extbase\QueryBuilder;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 trait User
 {
-    use QueryBuilder;
-
     /**
      * @var int
      */
@@ -61,7 +59,7 @@ trait User
      */
     public function fetchRawUser(): array
     {
-        $builder = $this->getQueryBuilderFor('fe_users');
+        $builder = QueryBuilder::getQueryBuilderFor('fe_users');
 
         $constraints = [
             $builder->expr()->eq('uid', $this->getUser()),

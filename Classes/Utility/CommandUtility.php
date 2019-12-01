@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Utility;
+namespace LMS\Facade\Utility;
 
 /* * *************************************************************
  *
@@ -26,7 +26,7 @@ namespace LMS3\Support\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Support\ObjectManageable;
+use LMS\Facade\ObjectManageable;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 
 /**
@@ -36,6 +36,8 @@ class CommandUtility
 {
     /**
      * Executes the passed action for any table that has been set.
+     *
+     * @psalm-suppress PossiblyUndefinedVariable
      *
      * @param string $table      [tx_extension_domain_model_table]
      * @param string $uid        [ NEWbe68s587 ]
@@ -49,7 +51,7 @@ class CommandUtility
     }
 
     /**
-     * @param array  $data
+     * @param array $data
      */
     public static function handleRaw(array $data): void
     {
@@ -69,6 +71,8 @@ class CommandUtility
     }
 
     /**
+     * @psalm-suppress MoreSpecificReturnType
+     * @psalm-suppress LessSpecificReturnStatement
      * @return \TYPO3\CMS\Core\DataHandling\DataHandler
      */
     private static function dataHandler(): DataHandler

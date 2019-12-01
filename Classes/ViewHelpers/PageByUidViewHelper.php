@@ -1,7 +1,7 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
-namespace LMS3\Support\ViewHelpers;
+namespace LMS\Facade\ViewHelpers;
 
 /* * *************************************************************
  *
@@ -26,7 +26,7 @@ namespace LMS3\Support\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Support\Repository\PageRepository;
+use LMS\Facade\Repository\PageRepository;
 
 /**
  * @author Borulko Sergey <borulkosergey@icloud.com>
@@ -48,6 +48,6 @@ class PageByUidViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractView
     {
         $uid = (int)$this->arguments['uid'];
 
-        return (array) PageRepository::make()->findByIds([$uid])->first();
+        return (array)PageRepository::make()->findByIds([$uid])->first();
     }
 }

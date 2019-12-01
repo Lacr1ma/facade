@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Repository;
+namespace LMS\Facade\Repository;
 
 /* * *************************************************************
  *
@@ -26,9 +26,8 @@ namespace LMS3\Support\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Support\ObjectManageable;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
-use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use LMS\Facade\ObjectManageable;
+use TYPO3\CMS\Extbase\{Object\ObjectManagerInterface, Persistence\Generic\PersistenceManager};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -48,6 +47,8 @@ trait StaticCreation
     }
 
     /**
+     * @psalm-suppress ArgumentTypeCoercion
+     *
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
     public function __construct(ObjectManagerInterface $objectManager)

@@ -6,7 +6,7 @@
 ```
 "repositories": [
     ...
-    {"type": "git", "url": "git@gitlab.com:lms3/core/support.git"}
+    {"type": "git", "url": "https://github.com/Lacr1ma/facade.git"}
 ]
 ```
 
@@ -14,6 +14,6 @@
 ```
 "require": {
     ...
-    "lms3/support": "*"
+    "lms/facade": "dev-master"
   }
 ```

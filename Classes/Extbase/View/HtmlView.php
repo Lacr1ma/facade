@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Extbase\View;
+namespace LMS\Facade\Extbase\View;
 
 /* * *************************************************************
  *
@@ -27,7 +27,7 @@ namespace LMS3\Support\Extbase\View;
  * ************************************************************* */
 
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use LMS3\Support\{Extbase\ExtensionHelper, ObjectManageable, Extbase\TypoScriptConfiguration};
+use LMS\Facade\{Extbase\ExtensionHelper, ObjectManageable, Extbase\TypoScriptConfiguration};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>

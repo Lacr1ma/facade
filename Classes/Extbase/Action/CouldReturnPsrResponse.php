@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Extbase\Action;
+namespace LMS\Facade\Extbase\Action;
 
 /* * *************************************************************
  *
@@ -36,6 +36,7 @@ trait CouldReturnPsrResponse
     /**
      * The repository has been fully copy/pasted from the original Extbase Controller
      *
+     * @psalm-suppress InternalMethod
      * {@inheritdoc}
      */
     protected function callActionMethod(): void

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Repository\Relation;
+namespace LMS\Facade\Repository\Relation;
 
 /* * *************************************************************
  *

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Extbase;
+namespace LMS\Facade\Extbase;
 
 /* * *************************************************************
  *
@@ -29,7 +29,7 @@ namespace LMS3\Support\Extbase;
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait Page
+class Page
 {
     /**
      * Get Current Page Identifier

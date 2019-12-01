@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Model\Property;
+namespace LMS\Facade\Model\Property;
 
 /* * *************************************************************
  *

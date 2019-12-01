@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Repository;
+namespace LMS\Facade\Repository;
 
 /* * *************************************************************
  *
@@ -26,7 +26,7 @@ namespace LMS3\Support\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Support\ObjectManageable;
+use LMS\Facade\ObjectManageable;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
@@ -77,6 +77,8 @@ trait CRUD
     }
 
     /**
+     * @psalm-suppress InternalMethod
+     *
      * @param array $properties
      *
      * @return \TYPO3\CMS\Extbase\DomainObject\AbstractEntity

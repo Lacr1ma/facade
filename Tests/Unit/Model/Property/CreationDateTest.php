@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Tests\Unit\Model\Property;
+namespace LMS\Facade\Tests\Unit\Model\Property;
 
 /* * *************************************************************
  *
@@ -26,14 +26,16 @@ namespace LMS3\Support\Tests\Unit\Model\Property;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS3\Support\Model\Property\CreationDate as ContainsCreationDate;
+use LMS\Facade\Model\Property\CreationDate as ContainsCreationDate;
 
 /**
  * @author Borulko Sergey <borulkosergey@icloud.com>
  */
 class CreationDateTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
 {
-    /** @var ContainsCreationDate */
+    /**
+     * @var ContainsCreationDate
+     */
     protected $trait;
 
     /**

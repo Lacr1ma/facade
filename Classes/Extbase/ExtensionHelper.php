@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Extbase;
+namespace LMS\Facade\Extbase;
 
 /* * *************************************************************
  *
@@ -36,8 +36,8 @@ namespace LMS3\Support\Extbase;
 trait ExtensionHelper
 {
     /**
-     * Input: \LMS3\Support\Extbase\ExtensionHelper'
-     * Output: Support
+     * Input: \LMS\Facade\Extbase\ExtensionHelper'
+     * Output: Facade
      *
      * @return string
      */
@@ -50,8 +50,8 @@ trait ExtensionHelper
     }
 
     /**
-     * Input: Support
-     * Output: tx_support
+     * Input: Facade
+     * Output: tx_facade
      *
      * @return string
      */
@@ -61,11 +61,11 @@ trait ExtensionHelper
     }
 
     /**
-     * Input: \LMS3\Support\Extbase\ExtensionHelper'
+     * Input: \LMS\Facade\Extbase\ExtensionHelper'
      * Output:
      *  [
-     *      0 => 'LMS3',
-     *      1 => 'Support',
+     *      0 => 'LMS',
+     *      1 => 'Facade',
      *      2 => 'Extbase',
      *      3 => 'ExtensionHelper'
      *  ]

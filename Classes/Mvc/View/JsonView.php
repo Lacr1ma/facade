@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Mvc\View;
+namespace LMS\Facade\Mvc\View;
 
 /* * *************************************************************
  *
@@ -34,14 +34,14 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 class JsonView extends \TYPO3\CMS\Extbase\Mvc\View\JsonView
 {
     /**
-     * Always transforming ObjectStorages to Arrays for the JSON view
+     * Always transforming Object Storage to Arrays for the JSON view
      *
      * @param mixed $value
      * @param array $configuration
      *
      * @return array
      */
-    protected function transformValue($value, array $configuration): array
+    protected function transformValue($value, array $configuration)
     {
         if ($value instanceof ObjectStorage) {
             $value = $value->toArray();

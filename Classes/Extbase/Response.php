@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Extbase;
+namespace LMS\Facade\Extbase;
 
 /* * *************************************************************
  *
@@ -32,12 +32,14 @@ use TYPO3\CMS\Core\Http\{HtmlResponse, JsonResponse};
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait Response
+class Response
 {
     /**
      * Create the fresh instance of Response
      *
-     * @param  string $content
+     * @psalm-suppress InternalClass
+     *
+     * @param string $content
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -51,18 +53,12 @@ trait Response
     }
 
     /**
-     * Tells us weather request related to JSON or not
+     * Response should be in json ?
      *
      * @return bool
      */
     public static function isJson(): bool
     {
-        $requestType = $GLOBALS['TYPO3_REQUEST']->getHeaderLine('content-type');
-
-        if ($requestType === 'application/json') {
-            return true;
-        }
-
-        return $GLOBALS['TSFE']->contentType === 'application/json';
+        return $GLOBALS['TYPO3_REQUEST']->getHeaderLine('accept') === 'application/json';
     }
 }

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS3\Support\Controller;
+namespace LMS\Facade\Controller;
 
 /* * *************************************************************
  *
@@ -26,6 +26,7 @@ namespace LMS3\Support\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use LMS\Facade\Extbase\Response;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
@@ -59,6 +60,9 @@ abstract class AbstractApiController extends Base\ApiController
     }
 
     /**
+     * @psalm-suppress InternalMethod
+     * @psalm-suppress UndefinedInterfaceMethod
+     *
      * @param \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $entity
      * @param array                                          $data
      */
@@ -76,6 +80,8 @@ abstract class AbstractApiController extends Base\ApiController
     }
 
     /**
+     * @psalm-suppress UndefinedInterfaceMethod
+     *
      * @param array $data
      */
     public function createAction(array $data): void
@@ -90,6 +96,8 @@ abstract class AbstractApiController extends Base\ApiController
     }
 
     /**
+     * @psalm-suppress UndefinedInterfaceMethod
+     *
      * @param \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $entity
      */
     public function destroyAction(AbstractEntity $entity): void
@@ -102,12 +110,14 @@ abstract class AbstractApiController extends Base\ApiController
     }
 
     /**
+     * @psalm-suppress UndefinedMethod
+     *
      * @param string $message
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function failAction(string $message): ResponseInterface
     {
-        return self::createWith($message);
+        return Response::createWith($message);
     }
 }
