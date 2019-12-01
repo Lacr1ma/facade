@@ -1,3 +1,0 @@
-config.tx_extbase.persistence.classes {
-    LMS3\Support\Tests\Build\User.mapping.tableName = fe_users
-}
