@@ -1,6 +1,5 @@
 {
 	"name": "lms/facade",
-	"type": "typo3-cms-extension",
 	"description": "Contains number of different helpers for other extensions",
 	"license": "MIT",
 	"authors": [
