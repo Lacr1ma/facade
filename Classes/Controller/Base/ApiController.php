@@ -26,8 +26,8 @@ namespace LMS\Facade\Controller\Base;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use TYPO3\CMS\Extbase\Persistence\RepositoryInterface;
 use LMS\Facade\Extbase\Action\CouldReturnPsrResponse;
+use TYPO3\CMS\Extbase\{DomainObject\DomainObjectInterface, Persistence\RepositoryInterface};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -37,19 +37,18 @@ abstract class ApiController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
     use CouldReturnPsrResponse;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\View\JsonView
+     * @var \LMS\Facade\Mvc\View\JsonView
      */
     public $view;
 
     /**
-     * Deny the request if denied by endpoint
-     * InitializeAction will not work in that case, because we need to use forward
+     * @param int $uid
+     *
+     * @return \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface|null
      */
-    public function checkAccess(): void
+    protected function getEntity(int $uid): ?DomainObjectInterface
     {
-        if (!$this->isAllowed($this->request->getArguments())) {
-            $this->forward('fail', null, null, ['message' => 'Access denied']);
-        }
+        return $this->getResourceRepository()->findByUid($uid);
     }
 
     /**
@@ -64,11 +63,4 @@ abstract class ApiController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
      * @see setVariablesToRender()
      */
     abstract protected function getRootName(): string;
-
-    /**
-     * @param array $requestArguments
-     *
-     * @return bool
-     */
-    abstract protected function isAllowed(array $requestArguments = []): bool;
 }

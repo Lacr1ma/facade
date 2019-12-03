@@ -26,25 +26,19 @@ namespace LMS\Facade\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\Extbase\Response;
-use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
-
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 abstract class AbstractApiController extends Base\ApiController
 {
     /**
-     * @param int $entity
+     * @param int $uid
      */
-    public function showAction(int $entity): void
+    public function showAction(int $uid): void
     {
-        $this->checkAccess();
-
         $this->view->setVariablesToRender([$this->getRootName()]);
 
-        $this->view->assign($this->getRootName(), [$this->getResourceRepository()->findByUid($entity)]);
+        $this->view->assign($this->getRootName(), [$this->getEntity($uid)]);
     }
 
     /**
@@ -52,31 +46,29 @@ abstract class AbstractApiController extends Base\ApiController
      */
     public function listAction(): void
     {
-        $this->checkAccess();
-
         $this->view->setVariablesToRender([$this->getRootName()]);
 
-        $this->view->assign($this->getRootName(), $this->getResourceRepository()->findAll());
+        $this->view->assign($this->getRootName(), $this->getResourceRepository()->all());
     }
 
     /**
      * @psalm-suppress InternalMethod
      * @psalm-suppress UndefinedInterfaceMethod
      *
-     * @param \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $entity
-     * @param array                                          $data
+     * @param int   $uid
+     * @param array $data
      */
-    public function editAction(AbstractEntity $entity, array $data): void
+    public function editAction(int $uid, array $data): void
     {
-        $this->checkAccess();
+        if ($entity = $this->getEntity($uid)) {
+            foreach ($data as $propertyName => $propertyValue) {
+                $entity->_setProperty($propertyName, $propertyValue);
+            }
 
-        $this->view->setVariablesToRender([$this->getRootName()]);
-
-        foreach ($data as $propertyName => $propertyValue) {
-            $entity->_setProperty($propertyName, $propertyValue);
+            $entity->save();
         }
 
-        $this->view->assign($this->getRootName(), $this->getResourceRepository()->upgrade($entity));
+        $this->view->assign('value', ['success' => (bool)$entity]);
     }
 
     /**
@@ -86,8 +78,6 @@ abstract class AbstractApiController extends Base\ApiController
      */
     public function createAction(array $data): void
     {
-        $this->checkAccess();
-
         $repository = $this->getResourceRepository();
 
         $this->view->assign('value', [
@@ -98,26 +88,12 @@ abstract class AbstractApiController extends Base\ApiController
     /**
      * @psalm-suppress UndefinedInterfaceMethod
      *
-     * @param \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $entity
+     * @param int $uid
      */
-    public function destroyAction(AbstractEntity $entity): void
+    public function destroyAction(int $uid): void
     {
-        $this->checkAccess();
-
         $this->view->assign('value', [
-            'success' => $this->getResourceRepository()->destroy($entity)
+            'success' => $this->getEntity($uid)->delete()
         ]);
-    }
-
-    /**
-     * @psalm-suppress UndefinedMethod
-     *
-     * @param string $message
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function failAction(string $message): ResponseInterface
-    {
-        return Response::createWith($message);
     }
 }
