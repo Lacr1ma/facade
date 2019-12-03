@@ -32,7 +32,7 @@ use TYPO3\CMS\Extbase\Mvc\Request as ExtbaseRequest;
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait Request
+class Request
 {
     /**
      * Retrieve the Controller name
