@@ -92,8 +92,10 @@ abstract class AbstractApiController extends Base\ApiController
      */
     public function destroyAction(int $uid): void
     {
+        $entity = $this->getEntity($uid);
+
         $this->view->assign('value', [
-            'success' => $this->getEntity($uid)->delete()
+            'success' => $entity && $entity->delete()
         ]);
     }
 }
