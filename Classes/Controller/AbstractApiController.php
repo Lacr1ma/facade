@@ -44,7 +44,7 @@ abstract class AbstractApiController extends Base\ApiController
     /**
      * Just render all the existing items related to specific resource
      */
-    public function listAction(): void
+    public function indexAction(): void
     {
         $this->view->setVariablesToRender([$this->getRootName()]);
 
@@ -58,7 +58,7 @@ abstract class AbstractApiController extends Base\ApiController
      * @param int   $uid
      * @param array $data
      */
-    public function editAction(int $uid, array $data): void
+    public function updateAction(int $uid, array $data): void
     {
         if ($entity = $this->getEntity($uid)) {
             foreach ($data as $propertyName => $propertyValue) {
@@ -76,7 +76,7 @@ abstract class AbstractApiController extends Base\ApiController
      *
      * @param array $data
      */
-    public function createAction(array $data): void
+    public function storeAction(array $data): void
     {
         $repository = $this->getResourceRepository();
 
