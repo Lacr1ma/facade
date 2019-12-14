@@ -15,7 +15,10 @@
 	"autoload": {
 		"psr-4": {
 			"LMS\\Facade\\": "Classes"
-		}
+		},
+		"files": [
+			"helpers.php"
+		]
 	},
 	"autoload-dev": {
 		"psr-4": {
