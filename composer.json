@@ -9,7 +9,12 @@
 		}
 	],
 	"require": {
-		"nesbot/carbon": "^2",
+		"php": ">=7.1",
+		"ext-mbstring": "*",
+		"doctrine/inflector": "^1.3",
+		"nesbot/carbon": "^2.27"
+	},
+	"replace": {
 		"tightenco/collect": "^6.0"
 	},
 	"autoload": {

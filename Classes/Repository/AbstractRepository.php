@@ -26,7 +26,7 @@ namespace LMS\Facade\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use Tightenco\Collect\Support\Collection;
+use LMS\Facade\Assist\Collection;
 use LMS\Facade\Repository\CRUD as ProvidesCRUDActions;
 use LMS\Facade\{Extbase\QueryBuilder, Extbase\TypoScriptConfiguration, Extbase\ExtensionHelper};
 
@@ -79,7 +79,7 @@ abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Reposit
     /**
      * @param array $uidList
      *
-     * @return \Tightenco\Collect\Support\Collection
+     * @return \LMS\Facade\Assist\Collection
      */
     public function findByIds(array $uidList): Collection
     {
@@ -94,7 +94,7 @@ abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Reposit
 
     /**
      * @psalm-suppress PossiblyInvalidMethodCall
-     * @return \Tightenco\Collect\Support\Collection
+     * @return \LMS\Facade\Assist\Collection
      */
     public function all(): Collection
     {

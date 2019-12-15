@@ -26,51 +26,19 @@ namespace LMS\Facade\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\StaticCreator;
-use LMS\Facade\Assist\Collection;
-
 /**
  * @psalm-suppress PropertyNotSetInConstructor
- *
  * @author         Borulko Sergey <borulkosergey@icloud.com>
  */
-class PageRepository extends \TYPO3\CMS\Frontend\Page\PageRepository
+abstract class AbstractUnrespectableRepository extends AbstractRepository
 {
-    use StaticCreator;
-
     /**
-     * @param array $uidList
-     *
-     * @return \LMS\Facade\Assist\Collection
+     * Disable storage pid check
      */
-    public function findByIds(array $uidList): Collection
+    public function initializeObject(): void
     {
-        $pages = [];
+        $settings = $this->createQuery()->getQuerySettings()->setRespectStoragePage(false);
 
-        foreach ($uidList as $uid) {
-            $pages[] = $this->getPage_noCheck((int)$uid);
-        }
-
-        return Collection::make($pages);
-    }
-
-    /**
-     * Find all sub pages for passed page
-     *
-     * @param int $page
-     *
-     * @return \LMS\Facade\Assist\Collection
-     */
-    public function findSubPages(int $page): Collection
-    {
-        $result = $this->getMenu($page, 'uid', 'sorting', 'nav_hide = 0');
-
-        $uidList = [];
-        foreach ($result as $record) {
-            $uidList[] = $record['uid'];
-            $uidList = array_merge($uidList, $this->findSubPages($record['uid'])->toArray());
-        }
-
-        return Collection::make($uidList);
+        $this->setDefaultQuerySettings($settings);
     }
 }

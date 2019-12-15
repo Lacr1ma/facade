@@ -26,7 +26,7 @@ namespace LMS\Facade\Model\Property;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use Tightenco\Collect\Support\Collection;
+use LMS\Facade\Assist\Collection;
 use LMS\Facade\Extbase\{User\StateContext, QueryBuilder};
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 
@@ -36,7 +36,7 @@ use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 trait Category
 {
     /**
-     * @return \Tightenco\Collect\Support\Collection
+     * @return \LMS\Facade\Assist\Collection
      */
     public function getCategories(): Collection
     {
@@ -44,7 +44,7 @@ trait Category
     }
 
     /**
-     * @return \Tightenco\Collect\Support\Collection
+     * @return \LMS\Facade\Assist\Collection
      */
     private function findCategories(): Collection
     {
@@ -66,7 +66,7 @@ trait Category
     }
 
     /**
-     * @return \Tightenco\Collect\Support\Collection
+     * @return \LMS\Facade\Assist\Collection
      */
     private function findRelations(): Collection
     {

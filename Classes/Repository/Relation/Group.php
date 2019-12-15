@@ -26,7 +26,7 @@ namespace LMS\Facade\Repository\Relation;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use Tightenco\Collect\Support\Collection;
+use LMS\Facade\Assist\Collection;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -36,7 +36,7 @@ trait Group
     /**
      * @param array $uidList
      *
-     * @return \Tightenco\Collect\Support\Collection
+     * @return \LMS\Facade\Assist\Collection
      */
     public function findByGroups(array $uidList): Collection
     {
@@ -52,7 +52,7 @@ trait Group
     /**
      * @param int $group
      *
-     * @return \Tightenco\Collect\Support\Collection
+     * @return \LMS\Facade\Assist\Collection
      */
     public function findByGroup(int $group): Collection
     {
@@ -70,7 +70,7 @@ trait Group
     }
 
     /**
-     * @return \Tightenco\Collect\Support\Collection
+     * @return \LMS\Facade\Assist\Collection
      */
     public function findWithoutGroups(): Collection
     {

@@ -26,7 +26,7 @@ namespace LMS\Facade\Repository\Relation;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use Tightenco\Collect\Support\Collection;
+use LMS\Facade\Assist\Collection;
 use TYPO3\CMS\Core\Collection\CollectionInterface;
 use TYPO3\CMS\Frontend\Category\Collection\CategoryCollection;
 
@@ -38,7 +38,7 @@ trait Category
     /**
      * @param array $categories
      *
-     * @return \Tightenco\Collect\Support\Collection
+     * @return \LMS\Facade\Assist\Collection
      */
     public function findByCategories(array $categories): Collection
     {
@@ -54,7 +54,7 @@ trait Category
     /**
      * @param int $category
      *
-     * @return \Tightenco\Collect\Support\Collection
+     * @return \LMS\Facade\Assist\Collection
      */
     public function findOneByCategory(int $category): Collection
     {
