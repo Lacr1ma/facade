@@ -441,7 +441,7 @@ if (!function_exists('collect')) {
      *
      * @param mixed $value
      *
-     * @return \Illuminate\Support\Collection
+     * @return \LMS\Facade\Assist\Collection
      */
     function collect($value = null)
     {
@@ -596,7 +596,7 @@ if (!function_exists('e')) {
     /**
      * Escape HTML special characters in a string.
      *
-     * @param \Illuminate\Contracts\Support\Htmlable|string $value
+     * @param \LMS\Facade\Contracts\Htmlable|string $value
      * @param bool                                          $doubleEncode
      *
      * @return string

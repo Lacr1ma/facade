@@ -432,7 +432,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     /**
      * Get all items except for those with the specified keys.
      *
-     * @param \Illuminate\Support\Collection|mixed $keys
+     * @param \LMS\Facade\Assist\Collection|mixed $keys
      *
      * @return static
      */
@@ -1800,7 +1800,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
     /**
      * Get a base Support collection instance from this collection.
      *
-     * @return \Illuminate\Support\Collection
+     * @return \LMS\Facade\Assist\Collection
      */
     public function toBase()
     {

@@ -59,7 +59,7 @@ class Filesystem
      *
      * @return string
      *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws \LMS\Facade\Contracts\FileSystem\FileNotFoundException
      */
     public function get($path, $lock = false)
     {
@@ -107,7 +107,7 @@ class Filesystem
      *
      * @return mixed
      *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws \LMS\Facade\Contracts\FileSystem\FileNotFoundException
      */
     public function getRequire($path)
     {

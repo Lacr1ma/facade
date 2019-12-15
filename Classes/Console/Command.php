@@ -428,7 +428,7 @@ class Command extends \Symfony\Component\Console\Command\Command
      * Format input to textual table.
      *
      * @param array                                         $headers
-     * @param \Illuminate\Contracts\Support\Arrayable|array $rows
+     * @param \LMS\Facade\Contracts\Arrayable|array $rows
      * @param string                                        $tableStyle
      * @param array                                         $columnStyles
      *
