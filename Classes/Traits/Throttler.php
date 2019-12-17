@@ -39,7 +39,7 @@ trait Throttler
      *
      * @return bool
      */
-    protected function hasTooManyLoginAttempts(): bool
+    protected function hasTooManyAttempts(): bool
     {
         return $this->limiter()->tooManyAttempts(
             $this->throttleKey(), $this->maxAttempts()
@@ -49,7 +49,7 @@ trait Throttler
     /**
      * Increment the attempts count for the session.
      */
-    protected function incrementLoginAttempts(): void
+    protected function incrementAttempts(): void
     {
         $this->limiter()->hit(
             $this->throttleKey(), $this->decayMinutes() * 60
