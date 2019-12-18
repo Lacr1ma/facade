@@ -61,13 +61,17 @@ class Redirect
     /**
      * Build the url for the passed page
      *
-     * @param int $pid
+     * @param int  $pid
+     * @param bool $absolute
      *
      * @return string
      */
-    public static function uriFor(int $pid): string
+    public static function uriFor(int $pid, bool $absolute = false): string
     {
-        return (string)Redirect::uriBuilder()->setTargetPageUid($pid)->build();
+        return (string)Redirect::uriBuilder()
+            ->setCreateAbsoluteUri($absolute)
+            ->setTargetPageUid($pid)
+            ->build();
     }
 
     /**
