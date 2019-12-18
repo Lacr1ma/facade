@@ -42,9 +42,9 @@ class Redirect
      */
     public static function toPage(int $pid): void
     {
-        $pageUri = Redirect::uriBuilder()->setTargetPageUid($pid)->build();
-
-        Redirect::toUri($pageUri);
+        Redirect::toUri(
+            self::uriFor($pid)
+        );
     }
 
     /**
@@ -56,6 +56,18 @@ class Redirect
     public static function toUri(string $uri, $status = HttpUtility::HTTP_STATUS_303): void
     {
         HttpUtility::redirect($uri, $status);
+    }
+
+    /**
+     * Build the url for the passed page
+     *
+     * @param int $pid
+     *
+     * @return string
+     */
+    public static function uriFor(int $pid): string
+    {
+        return (string)Redirect::uriBuilder()->setTargetPageUid($pid)->build();
     }
 
     /**
