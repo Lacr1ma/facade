@@ -32,11 +32,13 @@ namespace LMS\Facade;
 trait StaticCreator
 {
     /**
+     * @param array $arguments
+     *
      * @return $this
      */
-    public static function make(): self
+    public static function make(...$arguments): self
     {
-        return new static();
+        return new static(...$arguments);
     }
 
     /**

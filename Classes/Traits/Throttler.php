@@ -26,14 +26,16 @@ namespace LMS\Facade\Traits;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\Cache\RateLimiter;
 use Symfony\Component\HttpFoundation\Request;
+use LMS\Facade\{Cache\RateLimiter, Extbase\ExtensionHelper};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 trait Throttler
 {
+    use ExtensionHelper;
+
     /**
      * Determine if the session has too many attempts
      *
@@ -81,7 +83,7 @@ trait Throttler
      */
     protected function limiter(): RateLimiter
     {
-        return RateLimiter::make();
+        return RateLimiter::make(self::extensionTypoScriptKey());
     }
 
     /**

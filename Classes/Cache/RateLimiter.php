@@ -27,7 +27,7 @@ namespace LMS\Facade\Cache;
  * ************************************************************* */
 
 use TYPO3\CMS\Core\Cache\CacheManager;
-use LMS\Facade\{Extbase\ExtensionHelper, Traits\InteractsWithTime, ObjectManageable, StaticCreator};
+use LMS\Facade\{Traits\InteractsWithTime, ObjectManageable, StaticCreator};
 
 /**
  * @psalm-suppress PropertyNotSetInConstructor
@@ -35,7 +35,7 @@ use LMS\Facade\{Extbase\ExtensionHelper, Traits\InteractsWithTime, ObjectManagea
  */
 class RateLimiter
 {
-    use InteractsWithTime, StaticCreator, ExtensionHelper;
+    use InteractsWithTime, StaticCreator;
 
     /**
      * The cache store implementation.
@@ -45,13 +45,13 @@ class RateLimiter
     private $cache;
 
     /**
-     * RateLimiter constructor.
+     * @param string $extKey
      */
-    public function __construct()
+    public function __construct(string $extKey)
     {
         $manager = ObjectManageable::createObject(CacheManager::class);
 
-        $this->cache = $manager->getCache(self::extensionTypoScriptKey());
+        $this->cache = $manager->getCache($extKey);
     }
 
     /**
