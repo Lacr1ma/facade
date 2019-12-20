@@ -26,42 +26,36 @@ namespace LMS\Facade\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\HttpFoundation\Request;
-use TYPO3\CMS\Core\Http\{HtmlResponse, JsonResponse};
+use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-class Response
+class Validation
 {
     /**
-     * Create the fresh instance of Response
+     * @param \TYPO3\CMS\Extbase\Mvc\Controller\Arguments $args
      *
-     * @psalm-suppress InternalClass
-     *
-     * @param string $content
-     *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return array
      */
-    public static function createWith(string $content): ResponseInterface
+    public static function parseErorrs(Arguments $args): array
     {
-        if (Response::isJson()) {
-            return new JsonResponse(json_decode($content, true));
+        $errors = [];
+
+        foreach ($args->validate()->getFlattenedErrors() as $propertyName => $propertyErrors) {
+            $errors[$propertyName] = self::buildPropertyError($propertyErrors);
         }
 
-        return new HtmlResponse($content);
+        return $errors;
     }
 
     /**
-     * Response should be in json ?
+     * @param array $propertyErrors
      *
-     * @return bool
+     * @return array
      */
-    public static function isJson(): bool
+    protected static function buildPropertyError(array $propertyErrors): array
     {
-        $accepts = collect(Request::createFromGlobals()->getAcceptableContentTypes());
-
-        return $accepts->contains('application/json');
+        return collect($propertyErrors)->map->getMessage()->all();
     }
 }
