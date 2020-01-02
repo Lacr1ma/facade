@@ -73,4 +73,24 @@ class PageRepository extends \TYPO3\CMS\Frontend\Page\PageRepository
 
         return Collection::make($uidList);
     }
+
+    /**
+     * Build a tree structure starting from parent page
+     *
+     * @param int $startPage
+     *
+     * @return \LMS\Facade\Assist\Collection
+     */
+    public function buildTree(int $startPage): Collection
+    {
+        $result = $this->getMenu($startPage, 'uid, title', 'sorting', 'nav_hide = 0');
+
+        $menu = [];
+        foreach ($result as $record) {
+            $menu[$record['uid']] = $record;
+            $menu[$record['uid']]['children'] = $this->buildTree($record['uid'])->toArray();
+        }
+
+        return Collection::make($menu)->values();
+    }
 }
