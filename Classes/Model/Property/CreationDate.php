@@ -43,7 +43,7 @@ trait CreationDate
      */
     public function getCrdate(): int
     {
-        return $this->crdate;
+        return (int)$this->crdate;
     }
 
     /**

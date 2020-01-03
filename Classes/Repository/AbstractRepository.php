@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace LMS\Facade\Repository;
 
@@ -28,6 +28,7 @@ namespace LMS\Facade\Repository;
 
 use LMS\Facade\Assist\Collection;
 use LMS\Facade\Repository\CRUD as ProvidesCRUDActions;
+use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use LMS\Facade\{Extbase\QueryBuilder, Extbase\TypoScriptConfiguration, Extbase\ExtensionHelper};
 
 /**
@@ -63,7 +64,7 @@ abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Reposit
      *
      * @psalm-suppress PossiblyInvalidMethodCall
      *
-     * @param int    $uid
+     * @param int $uid
      * @param string $table
      *
      * @return array
@@ -71,33 +72,88 @@ abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Reposit
     protected function findRaw(int $uid, string $table): array
     {
         $builder = QueryBuilder::getQueryBuilderFor($table);
+
         $where = $builder->expr()->eq('uid', $uid);
 
         return (array)$builder->select('*')->from($table)->where($where)->execute()->fetch();
     }
 
     /**
-     * @param array $uidList
+     * @param int $uid
+     * @param array $props
      *
      * @return \LMS\Facade\Assist\Collection
      */
-    public function findByIds(array $uidList): Collection
+    public function findById(int $uid, array $props = []): Collection
     {
-        $entities = [];
-
-        foreach ($uidList as $uid) {
-            $entities[] = $this->findByUid((int)$uid);
+        if (!$entity = $this->findByUid($uid)) {
+            return collect();
         }
 
-        return Collection::make($entities);
+        return collect($this->callObjectGetters($entity))
+            ->when((bool)$props, static function (Collection $collection) use ($props) {
+                return $collection->only($props);
+            });
     }
 
     /**
-     * @psalm-suppress PossiblyInvalidMethodCall
+     * @param array $uidList
+     * @param array $props
+     *
      * @return \LMS\Facade\Assist\Collection
      */
-    public function all(): Collection
+    public function findByIds(array $uidList, array $props = []): Collection
     {
-        return Collection::make($this->findAll()->toArray());
+        $enteties = array_map(function (int $uid) use ($props) {
+            return $this->findById($uid, $props);
+        }, $uidList);
+
+        return collect($enteties);
+    }
+
+    /**
+     * @param array $props
+     * @return \LMS\Facade\Assist\Collection
+     */
+    public function all(array $props = []): Collection
+    {
+        return $this->toCollection($this->findAll()->toArray(), $props);
+    }
+
+    /**
+     * @param DomainObjectInterface[] $entities
+     * @param array $props
+     *
+     * @return \LMS\Facade\Assist\Collection
+     */
+    protected function toCollection(array $entities, array $props = []): Collection
+    {
+        $result = array_map(function (DomainObjectInterface $entity) {
+            return collect($this->callObjectGetters($entity))
+                ->when((bool)$props, static function (Collection $collection) use ($props) {
+                    return $collection->only($props);
+                });
+        }, $entities);
+
+        return collect($result);
+    }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $entity
+     * @return array
+     */
+    protected function callObjectGetters(DomainObjectInterface $entity): array
+    {
+        $result = [];
+
+        foreach ($entity->_getProperties() as $propertyName => $propertyValue) {
+            $getter = 'get' . ucfirst($propertyName);
+
+            if (method_exists($entity, $getter)) {
+                $result[$propertyName] = $entity->{$getter}();
+            }
+        }
+
+        return $result;
     }
 }
