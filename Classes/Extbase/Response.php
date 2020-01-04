@@ -41,16 +41,17 @@ class Response
      * @psalm-suppress InternalClass
      *
      * @param string $content
+     * @param int $status
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public static function createWith(string $content): ResponseInterface
+    public static function createWith(string $content, int $status = 200): ResponseInterface
     {
         if (Response::isJson()) {
-            return new JsonResponse(json_decode($content, true));
+            return new JsonResponse(json_decode($content, true), $status);
         }
 
-        return new HtmlResponse($content);
+        return new HtmlResponse($content, $status);
     }
 
     /**
