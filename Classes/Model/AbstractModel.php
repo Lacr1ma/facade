@@ -26,6 +26,7 @@ namespace LMS\Facade\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use LMS\Facade\Assist\Collection;
 use LMS\Facade\Extbase\{ExtensionHelper, TypoScriptConfiguration};
 
 /**
@@ -43,5 +44,25 @@ abstract class AbstractModel extends \TYPO3\CMS\Extbase\DomainObject\AbstractEnt
         return TypoScriptConfiguration::getSettings(
             self::extensionTypoScriptKey()
         );
+    }
+
+    /**
+     * @param array $keys
+     *
+     * @return \LMS\Facade\Assist\Collection
+     */
+    public function only(array $keys): Collection
+    {
+        return collect($this->_getProperties())->only($keys);
+    }
+
+    /**
+     * @param array $keys
+     *
+     * @return \LMS\Facade\Assist\Collection
+     */
+    public function except(array $keys): Collection
+    {
+        return collect($this->_getProperties())->except($keys);
     }
 }

@@ -54,6 +54,7 @@ trait StorageActions
     public static function create(array $properties = []): self
     {
         $entity = self::repository()->produce($properties);
+
         $entity->save();
 
         return $entity;
