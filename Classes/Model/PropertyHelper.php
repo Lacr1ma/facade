@@ -27,22 +27,47 @@ namespace LMS\Facade\Model;
  * ************************************************************* */
 
 use LMS\Facade\Assist\Collection;
-use LMS\Facade\Extbase\{ExtensionHelper, TypoScriptConfiguration};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-abstract class AbstractModel extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+trait PropertyHelper
 {
-    use StorageActions, ExtensionHelper, PropertyHelper;
+    /**
+     * @param array $keys
+     *
+     * @return \LMS\Facade\Assist\Collection
+     */
+    public function only(array $keys): Collection
+    {
+        return collect($this->getInitializedProperties())->only($keys);
+    }
+
+    /**
+     * @param array $keys
+     *
+     * @return \LMS\Facade\Assist\Collection
+     */
+    public function except(array $keys): Collection
+    {
+        return collect($this->getInitializedProperties())->except($keys);
+    }
 
     /**
      * @return array
      */
-    public static function settings(): array
+    public function getInitializedProperties(): array
     {
-        return TypoScriptConfiguration::getSettings(
-            self::extensionTypoScriptKey()
-        );
+        $result = [];
+
+        foreach ($this->_getProperties() as $propertyName => $propertyValue) {
+            $getter = 'get' . ucfirst($propertyName);
+
+            if (method_exists($this, $getter)) {
+                $result[$propertyName] = $this->{$getter}();
+            }
+        }
+
+        return $result;
     }
 }

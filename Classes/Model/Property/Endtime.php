@@ -41,7 +41,7 @@ trait Endtime
      */
     public function getEndtime(): int
     {
-        return $this->endtime;
+        return (int)$this->endtime;
     }
 
     /**

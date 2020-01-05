@@ -26,15 +26,16 @@ namespace LMS\Facade\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\Extbase\User;
-use LMS\Facade\Model\Property\{Endtime, IsOnline};
+use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
+use LMS\Facade\{Assist\Collection, Extbase\User, StaticCreator};
+use LMS\Facade\Model\Property\{CreationDate, Endtime, IsOnline};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 abstract class AbstractUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
 {
-    use Endtime, IsOnline, StorageActions;
+    use StaticCreator, CreationDate, Endtime, IsOnline, StorageActions, PropertyHelper;
 
     /**
      * {@inheritDoc}
