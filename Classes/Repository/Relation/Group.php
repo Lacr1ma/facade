@@ -35,15 +35,16 @@ trait Group
 {
     /**
      * @param array $uidList
+     * @param array $props
      *
      * @return \LMS\Facade\Assist\Collection
      */
-    public function findByGroups(array $uidList): Collection
+    public function findByGroups(array $uidList, array $props = []): Collection
     {
         $entities = [];
 
         foreach ($uidList as $groupUid) {
-            $entities[] = $this->findByGroup($groupUid);
+            $entities[] = $this->findByGroup($groupUid, $props);
         }
 
         return Collection::make($entities)->collapse()->unique();
@@ -51,10 +52,10 @@ trait Group
 
     /**
      * @param int $group
-     *
+     * @param array $props
      * @return \LMS\Facade\Assist\Collection
      */
-    public function findByGroup(int $group): Collection
+    public function findByGroup(int $group, array $props = []): Collection
     {
         $query = $this->createQuery();
 
@@ -64,9 +65,7 @@ trait Group
             return [];
         }
 
-        return Collection::make(
-            $query->matching($constraints)->execute()->toArray()
-        );
+        return $this->toCollection($query->matching($constraints)->execute()->toArray(), $props);
     }
 
     /**

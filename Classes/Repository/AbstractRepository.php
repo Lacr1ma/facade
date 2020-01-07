@@ -37,7 +37,7 @@ use LMS\Facade\{Extbase\QueryBuilder, Extbase\TypoScriptConfiguration, Extbase\E
  */
 abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
-    use ProvidesCRUDActions, StaticCreation, ExtensionHelper;
+    use ProvidesCRUDActions, StaticCreation, ExtensionHelper, Collectionable;
 
     /**
      * Sets the defined Storage PID that is set in the TypoScript area
@@ -71,11 +71,13 @@ abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Reposit
      */
     protected function findRaw(int $uid, string $table): array
     {
-        $builder = QueryBuilder::getQueryBuilderFor($table);
+        $builder = QueryBuilder::getQueryBuilderFor($table)->select('*')->from($table);
 
         $where = $builder->expr()->eq('uid', $uid);
 
-        return (array)$builder->select('*')->from($table)->where($where)->execute()->fetch();
+        return $this->toCollection(
+            (array)$builder->where($where)->execute()->fetch()
+        );
     }
 
     /**
@@ -118,42 +120,5 @@ abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Reposit
     public function all(array $props = []): Collection
     {
         return $this->toCollection($this->findAll()->toArray(), $props);
-    }
-
-    /**
-     * @param DomainObjectInterface[] $entities
-     * @param array $props
-     *
-     * @return \LMS\Facade\Assist\Collection
-     */
-    protected function toCollection(array $entities, array $props = []): Collection
-    {
-        $result = array_map(function (DomainObjectInterface $entity) {
-            return collect($this->callObjectGetters($entity))
-                ->when((bool)$props, static function (Collection $collection) use ($props) {
-                    return $collection->only($props);
-                });
-        }, $entities);
-
-        return collect($result);
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $entity
-     * @return array
-     */
-    protected function callObjectGetters(DomainObjectInterface $entity): array
-    {
-        $result = [];
-
-        foreach ($entity->_getProperties() as $propertyName => $propertyValue) {
-            $getter = 'get' . ucfirst($propertyName);
-
-            if (method_exists($entity, $getter)) {
-                $result[$propertyName] = $entity->{$getter}();
-            }
-        }
-
-        return $result;
     }
 }
