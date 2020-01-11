@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace LMS\Facade\Repository;
 
@@ -28,7 +28,6 @@ namespace LMS\Facade\Repository;
 
 use LMS\Facade\Assist\Collection;
 use LMS\Facade\Repository\CRUD as ProvidesCRUDActions;
-use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use LMS\Facade\{Extbase\QueryBuilder, Extbase\TypoScriptConfiguration, Extbase\ExtensionHelper};
 
 /**
