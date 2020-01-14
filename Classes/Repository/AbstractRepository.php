@@ -44,10 +44,20 @@ abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Reposit
     public function initializeObject(): void
     {
         $settings = $this->createQuery()->getQuerySettings()->setStoragePageIds([
-            TypoScriptConfiguration::getStoragePid($this->getExtensionKey())
+            $this->getPid()
         ]);
 
         $this->setDefaultQuerySettings($settings);
+    }
+
+    /**
+     * Retrieve pid for the repository if it's set
+     *
+     * @return int
+     */
+    public function getPid(): int
+    {
+        return TypoScriptConfiguration::getStoragePid($this->getExtensionKey()) ?: 0;
     }
 
     /**
