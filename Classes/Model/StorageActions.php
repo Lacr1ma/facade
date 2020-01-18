@@ -53,11 +53,13 @@ trait StorageActions
      */
     public static function create(array $properties = []): self
     {
-        if (!$properties['pid']) {
-            $properties['pid'] = self::repository()->getPid();
+        $repository = self::repository();
+
+        if (!isset($properties['pid']) && method_exists($repository, 'getPid')) {
+            $properties['pid'] = $repository->getPid();
         }
 
-        $entity = self::repository()->produce($properties);
+        $entity = $repository->produce($properties);
 
         $entity->save();
 
