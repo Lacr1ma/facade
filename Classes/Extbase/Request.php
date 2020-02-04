@@ -26,6 +26,7 @@ namespace LMS\Facade\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use LMS\Facade\Assist\Str;
 use LMS\Facade\ObjectManageable;
 use TYPO3\CMS\Extbase\Mvc\Request as ExtbaseRequest;
 
@@ -67,7 +68,7 @@ class Request
      */
     public static function getVendorNameBasedOn(string $controllerFQCN): string
     {
-        return Request::createInitialized($controllerFQCN)->getControllerVendorName();
+        return Str::before($controllerFQCN, '\\');
     }
 
     /**
