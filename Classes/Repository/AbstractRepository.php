@@ -51,6 +51,18 @@ abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Reposit
     }
 
     /**
+     * Disable storage pid check
+     */
+    public function withoutPid(): self
+    {
+        $this->setDefaultQuerySettings(
+            $this->createQuery()->getQuerySettings()->setRespectStoragePage(false)
+        );
+
+        return $this;
+    }
+
+    /**
      * Retrieve pid for the repository if it's set
      *
      * @return int
