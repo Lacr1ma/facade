@@ -27,7 +27,8 @@ namespace LMS\Facade\Extbase\View;
  * ************************************************************* */
 
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use LMS\Facade\{Extbase\ExtensionHelper, ObjectManageable, Extbase\TypoScriptConfiguration};
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
+use LMS\Facade\{Extbase\ExtensionHelper, ObjectManageable, Extbase\TypoScriptConfiguration as TS};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -46,7 +47,11 @@ trait HtmlView
     {
         $view = $this->createView();
 
-        $viewTS = TypoScriptConfiguration::getView(self::extensionTypoScriptKey());
+        $viewTS = TS::getView(self::extensionTypoScriptKey());
+
+        $settings = $this->typoScriptService()->convertTypoScriptArrayToPlainArray(
+            TS::getSettings(self::extensionTypoScriptKey())
+        );
 
         $view->setFormat('html');
         $view->setLayoutRootPaths($viewTS['layoutRootPaths.'] ?: []);
@@ -54,7 +59,15 @@ trait HtmlView
         $view->setTemplateRootPaths($viewTS['templateRootPaths.'] ?: []);
         $view->setTemplate($template);
 
-        return $view->assignMultiple($variables);
+        return $view->assignMultiple(array_merge($settings, $variables));
+    }
+
+    /**
+     * @return \TYPO3\CMS\Core\TypoScript\TypoScriptService
+     */
+    public function typoScriptService(): TypoScriptService
+    {
+        return ObjectManageable::createObject(TypoScriptService::class);
     }
 
     /**
