@@ -71,10 +71,9 @@ trait Category
     private function findRelations(): Collection
     {
         $builder = QueryBuilder::getQueryBuilderFor('sys_category_record_mm');
-
         $constraints = [
             $builder->expr()->eq('uid_foreign', $builder->createNamedParameter($this->getUid(), \PDO::PARAM_INT)),
-            $builder->expr()->eq('tablenames', $builder->createNamedParameter(self::getTableName()))
+            $builder->expr()->eq('tablenames', $builder->createNamedParameter($this->getTableName()))
         ];
 
         return Collection::make(
@@ -84,7 +83,7 @@ trait Category
                 ->where(...$constraints)
                 ->execute()
                 ->fetchAll()
-        )->add(0)->flatten();
+        )->flatten();
     }
 
     /**
