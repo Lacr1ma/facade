@@ -69,6 +69,7 @@ class Redirect
     public static function uriFor(int $pid, bool $absolute = false): string
     {
         return (string)Redirect::uriBuilder()
+            ->setLinkAccessRestrictedPages(true)
             ->setCreateAbsoluteUri($absolute)
             ->setTargetPageUid($pid)
             ->build();
