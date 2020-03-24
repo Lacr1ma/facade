@@ -90,15 +90,13 @@ abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Reposit
      *
      * @return array
      */
-    protected function findRaw(int $uid, string $table): array
+    public function findRaw(int $uid, string $table): array
     {
         $builder = QueryBuilder::getQueryBuilderFor($table)->select('*')->from($table);
 
         $where = $builder->expr()->eq('uid', $uid);
 
-        return $this->toCollection(
-            (array)$builder->where($where)->execute()->fetch()
-        );
+        return (array)$builder->where($where)->execute()->fetch();
     }
 
     /**

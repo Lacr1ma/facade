@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS\Facade\Model;
+namespace LMS\Facade\Extbase;
 
 /* * *************************************************************
  *
@@ -26,32 +26,27 @@ namespace LMS\Facade\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\Assist\Collection;
-use LMS\Facade\Extbase\{ExtensionHelper, TypoScriptConfiguration};
+use TYPO3\CMS\Core\{Utility\GeneralUtility, EventDispatcher\EventDispatcher};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-abstract class AbstractModel extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class PsrDispatcher
 {
-    use StorageActions, ExtensionHelper, PropertyHelper;
-
     /**
-     * @return array
+     * @param object $event
+     * @return object
      */
-    public static function settings(): array
+    public static function emit(object $event): object
     {
-        return TypoScriptConfiguration::getSettings(
-            self::extensionTypoScriptKey()
-        );
+        return self::dispatcher()->dispatch($event);
     }
 
     /**
-     * @param array $props
-     * @return \LMS\Facade\Assist\Collection
+     * @return \TYPO3\CMS\Core\EventDispatcher\EventDispatcher
      */
-    public function toCollection(array $props = []): Collection
+    public static function dispatcher(): EventDispatcher
     {
-        return $this->repository()->toCollection([$this], $props)->first()->filter();
+        return GeneralUtility::makeInstance(\TYPO3\CMS\Core\EventDispatcher\EventDispatcher::class);
     }
 }

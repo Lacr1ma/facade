@@ -27,6 +27,7 @@ namespace LMS\Facade\Model\Property;
  * ************************************************************* */
 
 use LMS\Facade\Assist\Collection;
+use Doctrine\DBAL\{Connection, FetchMode};
 use LMS\Facade\Extbase\{User\StateContext, QueryBuilder};
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 
@@ -48,20 +49,18 @@ trait Category
      */
     private function findCategories(): Collection
     {
-        $builder = QueryBuilder::getQueryBuilderFor('sys_category');
+        $builder = QueryBuilder::getQueryBuilderFor('sys_category')->from('sys_category');
+
+        $lang = $builder->createNamedParameter($this->getFrontendLanguage(), \PDO::PARAM_INT);
+        $uids = $builder->createNamedParameter($this->findRelations()->toArray(), Connection::PARAM_INT_ARRAY);
 
         $constraints = [
-            $builder->expr()->in('uid', $this->findRelations()->toArray()),
-            $builder->expr()->in('sys_language_uid', $this->getFrontendLanguage()),
+            $builder->expr()->in('uid', $uids),
+            $builder->expr()->eq('sys_language_uid', $lang)
         ];
 
-        return Collection::make(
-            $builder
-                ->select(...['uid', 'title', 'parent'])
-                ->from('sys_category')
-                ->where(...$constraints)
-                ->execute()
-                ->fetchAll()
+        return collect(
+            $builder->select(...['uid', 'title', 'parent'])->where(...$constraints)->execute()->fetchAll()
         );
     }
 
@@ -70,20 +69,19 @@ trait Category
      */
     private function findRelations(): Collection
     {
-        $builder = QueryBuilder::getQueryBuilderFor('sys_category_record_mm');
+        $column = 'uid_local';
+        $table = 'sys_category_record_mm';
+
+        $builder = QueryBuilder::getQueryBuilderFor($table)->from($table)->select($column);
+
         $constraints = [
             $builder->expr()->eq('uid_foreign', $builder->createNamedParameter($this->getUid(), \PDO::PARAM_INT)),
             $builder->expr()->eq('tablenames', $builder->createNamedParameter($this->getTableName()))
         ];
 
-        return Collection::make(
-            $builder
-                ->select('uid_local')
-                ->from('sys_category_record_mm')
-                ->where(...$constraints)
-                ->execute()
-                ->fetchAll()
-        )->flatten();
+        return collect(
+            $builder->where(...$constraints)->execute()->fetchAll(FetchMode::COLUMN, $column)
+        );
     }
 
     /**
