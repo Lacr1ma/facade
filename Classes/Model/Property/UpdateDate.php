@@ -36,7 +36,7 @@ trait UpdateDate
     /**
      * @var int
      */
-    protected $tstamp;
+    protected $tstamp = 0;
 
     /**
      * @return int

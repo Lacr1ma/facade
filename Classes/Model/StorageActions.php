@@ -59,6 +59,10 @@ trait StorageActions
             $properties['pid'] = $repository->getPid();
         }
 
+        if (!isset($properties['crdate'])) {
+            $properties['crdate'] = time();
+        }
+
         $entity = $repository->produce($properties);
 
         $entity->save();

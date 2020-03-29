@@ -36,7 +36,7 @@ trait CreationDate
     /**
      * @var int
      */
-    protected $crdate;
+    protected $crdate = 0;
 
     /**
      * @return int

@@ -29,26 +29,26 @@ namespace LMS\Facade\Model\Property;
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait Type
+trait CruserId
 {
     /**
      * @var int
      */
-    protected $type = 0;
+    protected $cruserId = 0;
 
     /**
      * @return int
      */
-    public function getType(): int
+    public function getCruserId(): int
     {
-        return $this->type;
+        return $this->cruserId;
     }
 
     /**
-     * @param int $type
+     * @param int $uid
      */
-    public function setType(int $type): void
+    public function setCruserId(int $uid): void
     {
-        $this->type = $type;
+        $this->cruserId = $uid;
     }
 }

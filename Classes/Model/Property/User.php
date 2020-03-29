@@ -36,7 +36,7 @@ trait User
     /**
      * @var int
      */
-    protected $user;
+    protected $user = 0;
 
     /**
      * @return int

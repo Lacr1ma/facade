@@ -100,6 +100,20 @@ abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Reposit
     }
 
     /**
+     * Retrieve property from table/uid association
+     *
+     * @param int $uid
+     * @param string $table
+     * @param string $property
+     *
+     * @return mixed
+     */
+    public function findRawProperty(int $uid, string $table, string $property)
+    {
+        return collect($this->findRaw($uid, $table))->get($property);
+    }
+
+    /**
      * @param int $uid
      * @param array $props
      *

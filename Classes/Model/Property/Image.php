@@ -26,29 +26,31 @@ namespace LMS\Facade\Model\Property;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait Type
+trait Image
 {
     /**
-     * @var int
+     * @var \TYPO3\CMS\Extbase\Domain\Model\FileReference
      */
-    protected $type = 0;
+    protected $image;
 
     /**
-     * @return int
+     * @return string
      */
-    public function getType(): int
+    public function getImage(): string
     {
-        return $this->type;
+        return $this->image ? $this->image->getOriginalResource()->getPublicUrl() : '';
     }
 
     /**
-     * @param int $type
+     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $image
      */
-    public function setType(int $type): void
+    public function setImage(FileReference $image): void
     {
-        $this->type = $type;
+        $this->image = $image;
     }
 }
