@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace LMS\Facade\Extbase;
@@ -26,18 +27,66 @@ namespace LMS\Facade\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use LMS\Facade\Extbase\User\StateContext;
+
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 class User
 {
     /**
-     * Retrieve the currently logged in user identifier
-     *
-     * @return int
+     * Determine whether user is logged in
+     */
+    public static function isLoggedIn(): bool
+    {
+        return StateContext::isNotLoggedIn();
+    }
+
+    /**
+     * Just syntax sugar
+     */
+    public static function isNotLoggedIn(): bool
+    {
+        return self::isLoggedIn() === false;
+    }
+
+    /**
+     * Check if current user memger of a group.
+     */
+    public static function hasGroup(int $uid): bool
+    {
+        return collect(self::currentGroupList())->contains($uid);
+    }
+
+    /**
+     * Get all the group names that current user has.
+     */
+    public static function currentGroupNames(): array
+    {
+        return (array)StateContext::getTypo3Context()->getPropertyFromAspect('frontend.user', 'groupNames');
+    }
+
+    /**
+     * Get all the group identifiers that current user has.
+     */
+    public static function currentGroupList(): array
+    {
+        return (array)StateContext::getTypo3Context()->getPropertyFromAspect('frontend.user', 'groupIds');
+    }
+
+    /**
+     * Retrieve the currently logged in user uid.
      */
     public static function currentUid(): int
     {
-        return (int)$GLOBALS['TSFE']->fe_user->user['uid'];
+        return (int)StateContext::getTypo3Context()->getPropertyFromAspect('frontend.user', 'id');
+    }
+
+    /**
+     * Retrieve the currently logged in user name.
+     */
+    public static function currentUsername(): string
+    {
+        return (string)StateContext::getTypo3Context()->getPropertyFromAspect('frontend.user', 'username');
     }
 }
