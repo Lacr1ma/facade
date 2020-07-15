@@ -36,7 +36,7 @@ use LMS\Facade\{Extbase\QueryBuilder, Extbase\TypoScriptConfiguration, Extbase\E
  */
 abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
-    use ProvidesCRUDActions, StaticCreation, ExtensionHelper, Collectionable;
+    use ProvidesCRUDActions, StaticCreation, ExtensionHelper, Collectionable, CacheQuery;
 
     /**
      * Sets the defined Storage PID that is set in the TypoScript area

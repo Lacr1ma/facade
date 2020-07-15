@@ -39,8 +39,6 @@ class Manager
     use StaticCreator;
 
     /**
-     * The cache store implementation.
-     *
      * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
      */
     private $cache;
@@ -56,9 +54,9 @@ class Manager
     }
 
     /**
-     * Attempt to get the reviously cached data.
+     * Attempt to get the cached data.
      *
-     * @return mixed
+     * @see FrontendInterface::get
      */
     public function take(string $key)
     {
@@ -70,15 +68,20 @@ class Manager
     /**
      * Attempt to save value in cache.
      *
-     * @param string $key
-     * @param mixed  $value
-     *
-     * @return mixed
+     * @see FrontendInterface::set
      */
     public function put(string $key, $value)
     {
         $this->cache->set($key, $value);
 
         return $value;
+    }
+
+    /**
+     * @see FrontendInterface::has
+     */
+    public function has(string $key): bool
+    {
+        return $this->cache->has($key);
     }
 }
