@@ -37,14 +37,12 @@ abstract class ApiController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
     use CouldReturnPsrResponse;
 
     /**
-     * @var \LMS\Facade\Mvc\View\JsonView
+     * {@inheritdoc}
      */
     public $view;
 
     /**
-     * @param int $uid
      *
-     * @return \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface|null
      */
     protected function getEntity(int $uid): ?DomainObjectInterface
     {
@@ -53,14 +51,11 @@ abstract class ApiController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
 
     /**
      * Should return the Repository of the Resource
-     *
-     * @return \TYPO3\CMS\Extbase\Persistence\RepositoryInterface
      */
     abstract protected function getResourceRepository(): RepositoryInterface;
 
     /**
-     * @return string
-     * @see setVariablesToRender()
+     * @see \TYPO3\CMS\Extbase\Mvc\View\JsonView::setVariablesToRender()
      */
     abstract protected function getRootName(): string;
 }
