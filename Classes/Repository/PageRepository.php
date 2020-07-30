@@ -37,7 +37,7 @@ use LMS\Facade\Extbase\ExtensionHelper;
  */
 class PageRepository extends \TYPO3\CMS\Frontend\Page\PageRepository
 {
-    use StaticCreator, ExtensionHelper, CacheQuery;
+    use StaticCreator, ExtensionHelper, CacheQuery, PropertyManagement;
 
     /**
      * @param array $uidList
