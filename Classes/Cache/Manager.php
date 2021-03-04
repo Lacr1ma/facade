@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types = 1);
 
-namespace LMS\Facade\Model\Property;
+namespace LMS\Facade\Cache;
 
 /* * *************************************************************
  *
@@ -26,60 +27,61 @@ namespace LMS\Facade\Model\Property;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\Extbase\QueryBuilder;
+use LMS\Facade\{ObjectManageable, StaticCreator};
+use TYPO3\CMS\Core\Cache\CacheManager;
 
 /**
- * @author Sergey Borulko <borulkosergey@icloud.com>
+ * @psalm-suppress PropertyNotSetInConstructor
+ * @author         Sergey Borulko <borulkosergey@icloud.com>
  */
-trait User
+class Manager
 {
-    /**
-     * @var int
-     */
-    protected $user = 0;
+    use StaticCreator;
 
     /**
-     * @return int
+     * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
      */
-    public function getUser(): int
+    private $cache;
+
+    /**
+     * @param string $extKey
+     */
+    public function __construct(string $extKey)
     {
-        return $this->user;
+        $manager = ObjectManageable::createObject(CacheManager::class);
+
+        $this->cache = $manager->getCache($extKey);
     }
 
     /**
-     * @param int $user
-     */
-    public function setUser(int $user): void
-    {
-        $this->user = $user;
-    }
-
-    /**
-     * @return array
-     */
-    public function fetchRawUser(): array
-    {
-        $builder = QueryBuilder::getQueryBuilderFor('fe_users');
-
-        $constraints = [
-            $builder->expr()->eq('uid', $this->getUser()),
-        ];
-
-        return $builder
-            ->select('*')
-            ->from('fe_users')
-            ->where(...$constraints)
-            ->execute()
-            ->fetch();
-    }
-
-    /**
-     * @param string $property
+     * Attempt to get the cached data.
      *
-     * @return mixed
+     * @see FrontendInterface::get
      */
-    public function fetchUserProperty(string $property)
+    public function take(string $key)
     {
-        return $this->fetchRawUser()[$property];
+        $result = $this->cache->get($key);
+
+        return $result ?: null;
+    }
+
+    /**
+     * Attempt to save value in cache.
+     *
+     * @see FrontendInterface::set
+     */
+    public function put(string $key, $value)
+    {
+        $this->cache->set($key, $value);
+
+        return $value;
+    }
+
+    /**
+     * @see FrontendInterface::has
+     */
+    public function has(string $key): bool
+    {
+        return $this->cache->has($key);
     }
 }

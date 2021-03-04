@@ -36,7 +36,7 @@ use LMS\Facade\{Extbase\QueryBuilder, Extbase\TypoScriptConfiguration, Extbase\E
  */
 abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
-    use ProvidesCRUDActions, StaticCreation, ExtensionHelper, Collectionable;
+    use ProvidesCRUDActions, PropertyManagement, StaticCreation, ExtensionHelper, Collectionable, CacheQuery;
 
     /**
      * Sets the defined Storage PID that is set in the TypoScript area
@@ -64,8 +64,6 @@ abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Reposit
 
     /**
      * Retrieve pid for the repository if it's set
-     *
-     * @return int
      */
     public function getPid(): int
     {
@@ -73,7 +71,7 @@ abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Reposit
     }
 
     /**
-     * @return string
+     *
      */
     protected function getExtensionKey(): string
     {
@@ -81,31 +79,7 @@ abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Reposit
     }
 
     /**
-     * Returns an array with initialized properties for requested record
      *
-     * @psalm-suppress PossiblyInvalidMethodCall
-     *
-     * @param int $uid
-     * @param string $table
-     *
-     * @return array
-     */
-    protected function findRaw(int $uid, string $table): array
-    {
-        $builder = QueryBuilder::getQueryBuilderFor($table)->select('*')->from($table);
-
-        $where = $builder->expr()->eq('uid', $uid);
-
-        return $this->toCollection(
-            (array)$builder->where($where)->execute()->fetch()
-        );
-    }
-
-    /**
-     * @param int $uid
-     * @param array $props
-     *
-     * @return \LMS\Facade\Assist\Collection
      */
     public function findById(int $uid, array $props = []): Collection
     {
@@ -120,10 +94,7 @@ abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Reposit
     }
 
     /**
-     * @param array $uidList
-     * @param array $props
      *
-     * @return \LMS\Facade\Assist\Collection
      */
     public function findByIds(array $uidList, array $props = []): Collection
     {
@@ -135,8 +106,7 @@ abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Reposit
     }
 
     /**
-     * @param array $props
-     * @return \LMS\Facade\Assist\Collection
+     *
      */
     public function all(array $props = []): Collection
     {

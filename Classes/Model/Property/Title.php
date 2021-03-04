@@ -29,26 +29,26 @@ namespace LMS\Facade\Model\Property;
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait Type
+trait Title
 {
     /**
-     * @var int
+     * @var string
      */
-    protected $type = 0;
+    protected $title = '';
 
     /**
-     * @return int
+     * @return string
      */
-    public function getType(): int
+    public function getTitle(): string
     {
-        return $this->type;
+        return $this->title;
     }
 
     /**
-     * @param int $type
+     * @param string $title
      */
-    public function setType(int $type): void
+    public function setTitle(string $title): void
     {
-        $this->type = $type;
+        $this->title = $title;
     }
 }

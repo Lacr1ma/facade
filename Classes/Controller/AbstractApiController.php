@@ -32,7 +32,7 @@ namespace LMS\Facade\Controller;
 abstract class AbstractApiController extends Base\ApiController
 {
     /**
-     * @param int $uid
+     *
      */
     public function showAction(int $uid): void
     {
@@ -52,11 +52,21 @@ abstract class AbstractApiController extends Base\ApiController
     }
 
     /**
-     * @psalm-suppress InternalMethod
-     * @psalm-suppress UndefinedInterfaceMethod
      *
-     * @param int   $uid
-     * @param array $data
+     */
+    public function setPropertiesAction(int $uid, array $data): void
+    {
+        $table = (string)$data['table'];
+
+        unset($data['table']);
+
+        $this->getResourceRepository()->setEntityProperties($uid, $table, $data);
+
+        $this->view->assign('value', ['success' => true]);
+    }
+
+    /**
+     *
      */
     public function updateAction(int $uid, array $data): void
     {
@@ -72,9 +82,7 @@ abstract class AbstractApiController extends Base\ApiController
     }
 
     /**
-     * @psalm-suppress UndefinedInterfaceMethod
      *
-     * @param array $data
      */
     public function storeAction(array $data): void
     {
@@ -86,9 +94,7 @@ abstract class AbstractApiController extends Base\ApiController
     }
 
     /**
-     * @psalm-suppress UndefinedInterfaceMethod
      *
-     * @param int $uid
      */
     public function destroyAction(int $uid): void
     {

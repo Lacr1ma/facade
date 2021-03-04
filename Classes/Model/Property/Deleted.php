@@ -39,6 +39,14 @@ trait Deleted
     /**
      * @return bool
      */
+    public function getDeleted(): bool
+    {
+        return $this->isDeleted();
+    }
+
+    /**
+     * @return bool
+     */
     public function isDeleted(): bool
     {
         return (bool)$this->deleted;

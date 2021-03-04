@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace LMS\Facade\Repository;
@@ -28,15 +29,15 @@ namespace LMS\Facade\Repository;
 
 use LMS\Facade\StaticCreator;
 use LMS\Facade\Assist\Collection;
+use LMS\Facade\Extbase\ExtensionHelper;
 
 /**
  * @psalm-suppress PropertyNotSetInConstructor
- *
  * @author         Borulko Sergey <borulkosergey@icloud.com>
  */
 class PageRepository extends \TYPO3\CMS\Frontend\Page\PageRepository
 {
-    use StaticCreator;
+    use StaticCreator, ExtensionHelper, CacheQuery, PropertyManagement;
 
     /**
      * @param array $uidList
@@ -45,33 +46,39 @@ class PageRepository extends \TYPO3\CMS\Frontend\Page\PageRepository
      */
     public function findByIds(array $uidList): Collection
     {
-        $pages = [];
+        return static::cacheProxy(
+            (function () use ($uidList) {
+                $pages = [];
 
-        foreach ($uidList as $uid) {
-            $pages[] = $this->getPage_noCheck((int)$uid);
-        }
+                foreach ($uidList as $uid) {
+                    $pages[] = $this->getPage_noCheck((int)$uid);
 
-        return Collection::make($pages);
+                    return Collection::make($pages);
+                }
+            }),
+            compact('uidList')
+        );
     }
 
     /**
      * Find all sub pages for passed page
-     *
-     * @param int $page
-     *
-     * @return \LMS\Facade\Assist\Collection
      */
     public function findSubPages(int $page): Collection
     {
-        $result = $this->getMenu($page, 'uid', 'sorting', 'nav_hide = 0');
+        return static::cacheProxy(
+            (function () use ($page) {
+                $result = $this->getMenu($page, 'uid', 'sorting', 'nav_hide = 0');
 
-        $uidList = [];
-        foreach ($result as $record) {
-            $uidList[] = $record['uid'];
-            $uidList = array_merge($uidList, $this->findSubPages($record['uid'])->toArray());
-        }
+                $uidList = [];
+                foreach ($result as $record) {
+                    $uidList[] = $record['uid'];
+                    $uidList = array_merge($uidList, $this->findSubPages($record['uid'])->toArray());
+                }
 
-        return Collection::make($uidList);
+                return Collection::make($uidList);
+            }),
+            compact('page')
+        );
     }
 
     /**

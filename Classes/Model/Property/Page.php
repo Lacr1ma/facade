@@ -34,7 +34,7 @@ trait Page
     /**
      * @var int
      */
-    protected $page;
+    protected $page = 0;
 
     /**
      * @param int $page

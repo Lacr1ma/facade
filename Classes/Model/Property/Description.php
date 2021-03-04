@@ -29,26 +29,26 @@ namespace LMS\Facade\Model\Property;
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait Type
+trait Description
 {
     /**
-     * @var int
+     * @var string
      */
-    protected $type = 0;
+    protected $description = '';
 
     /**
-     * @return int
+     * @return string
      */
-    public function getType(): int
+    public function getDescription(): string
     {
-        return $this->type;
+        return $this->description;
     }
 
     /**
-     * @param int $type
+     * @param string $description
      */
-    public function setType(int $type): void
+    public function setDescription(string $description): void
     {
-        $this->type = $type;
+        $this->description = $description;
     }
 }

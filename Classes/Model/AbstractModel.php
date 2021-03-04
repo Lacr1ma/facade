@@ -45,4 +45,13 @@ abstract class AbstractModel extends \TYPO3\CMS\Extbase\DomainObject\AbstractEnt
             self::extensionTypoScriptKey()
         );
     }
+
+    /**
+     * @param array $props
+     * @return \LMS\Facade\Assist\Collection
+     */
+    public function toCollection(array $props = []): Collection
+    {
+        return $this->repository()->toCollection([$this], $props)->first()->filter();
+    }
 }

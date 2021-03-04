@@ -26,6 +26,7 @@ namespace LMS\Facade\Model\Property;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use Carbon\Carbon;
 use LMS\Facade\Extbase\QueryBuilder;
 
 /**
@@ -34,21 +35,46 @@ use LMS\Facade\Extbase\QueryBuilder;
 trait IsOnline
 {
     /**
-     * @psalm-suppress PossiblyInvalidMethodCall
-     * @psalm-suppress InternalMethod
+     * @var int
+     */
+    protected $isOnline = 0;
+
+    /**
+     * Clear the activity time
+     */
+    public function resetOnlineTime(): void
+    {
+        $this->isOnline = 0;
+    }
+
+    /**
      * @return bool
      */
     public function getOnline(): bool
     {
+        return $this->hasActiveSession() || $this->wasActiveRecently();
+    }
+
+    /**
+     * @psalm-suppress PossiblyInvalidMethodCall
+     * @psalm-suppress InternalMethod
+     *
+     * @return bool
+     */
+    public function hasActiveSession(): bool
+    {
         $builder = QueryBuilder::getQueryBuilderFor('fe_sessions');
 
-        return (bool)$builder
-            ->count('ses_userid')
-            ->from('fe_sessions')
-            ->where(
-                $builder->expr()->eq('ses_userid', $this->getUid())
-            )
-            ->execute()
-            ->fetchColumn(0);
+        $where = [$builder->expr()->eq('ses_userid', $this->getUid())];
+
+        return (bool)$builder->count('ses_userid')->from('fe_sessions')->where(...$where)->execute()->fetchColumn();
+    }
+
+    /**
+     * @return bool
+     */
+    public function wasActiveRecently(): bool
+    {
+        return $this->isOnline > 0 && Carbon::createFromTimestamp($this->isOnline)->diffInMinutes(Carbon::now()) <= 1;
     }
 }

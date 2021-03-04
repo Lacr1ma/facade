@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS\Facade\Model\Property;
+namespace LMS\Facade\Extbase;
 
 /* * *************************************************************
  *
@@ -26,29 +26,27 @@ namespace LMS\Facade\Model\Property;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Core\{Utility\GeneralUtility, EventDispatcher\EventDispatcher};
+
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait Type
+class PsrDispatcher
 {
     /**
-     * @var int
+     * @param object $event
+     * @return object
      */
-    protected $type = 0;
-
-    /**
-     * @return int
-     */
-    public function getType(): int
+    public static function emit(object $event): object
     {
-        return $this->type;
+        return self::dispatcher()->dispatch($event);
     }
 
     /**
-     * @param int $type
+     * @return \TYPO3\CMS\Core\EventDispatcher\EventDispatcher
      */
-    public function setType(int $type): void
+    public static function dispatcher(): EventDispatcher
     {
-        $this->type = $type;
+        return GeneralUtility::makeInstance(\TYPO3\CMS\Core\EventDispatcher\EventDispatcher::class);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace LMS\Facade\Model\Property;
+namespace LMS\Facade\ViewHelpers;
 
 /* * *************************************************************
  *
@@ -26,29 +26,30 @@ namespace LMS\Facade\Model\Property;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use LMS\Facade\Repository\PageRepository;
+
 /**
- * @author Sergey Borulko <borulkosergey@icloud.com>
+ * @author Borulko Sergey <borulkosergey@icloud.com>
  */
-trait Type
+class RecordViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
 {
     /**
-     * @var int
+     * {@inheritDoc}
      */
-    protected $type = 0;
-
-    /**
-     * @return int
-     */
-    public function getType(): int
+    public function initializeArguments(): void
     {
-        return $this->type;
+        $this->registerArgument('uid', 'int', '', true);
+        $this->registerArgument('table', 'string', '', true);
     }
 
     /**
-     * @param int $type
+     * Retrieve the raw database info for the table/uid relation.
      */
-    public function setType(int $type): void
+    public function render(): array
     {
-        $this->type = $type;
+        $uid = (int)$this->arguments['uid'];
+        $table = (string)$this->arguments['table'];
+
+        return PageRepository::make()->findRaw($uid, $table);
     }
 }

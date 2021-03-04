@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types = 1);
 
-namespace LMS\Facade\Model\Property;
+namespace LMS\Facade\Repository;
 
 /* * *************************************************************
  *
@@ -26,29 +27,41 @@ namespace LMS\Facade\Model\Property;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use LMS\Facade\Cache\Manager;
+use LMS\Facade\ObjectManageable;
+use TYPO3\CMS\Extbase\{Object\ObjectManagerInterface, Persistence\Generic\PersistenceManager};
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait Type
+trait CacheQuery
 {
     /**
-     * @var int
+     * @return mixed
      */
-    protected $type = 0;
-
-    /**
-     * @return int
-     */
-    public function getType(): int
+    protected static function cacheProxy(\Closure $resultProvider, array $params)
     {
-        return $this->type;
+        $class = class_basename(get_called_class());
+        $method = debug_backtrace()[1]['function'];
+
+        $cacheKey = $class . '%' . $method . '%' . implode('_', $params);
+
+        if ($hit = static::cacheManager()->take($cacheKey)) {
+            return $hit;
+        }
+
+        if (static::cacheManager()->has($cacheKey)) {
+            return null;
+        }
+
+        return static::cacheManager()->put($cacheKey, $resultProvider());
     }
 
-    /**
-     * @param int $type
-     */
-    public function setType(int $type): void
+    protected static function cacheManager(): Manager
     {
-        $this->type = $type;
+        return Manager::make(
+            static::extensionTypoScriptKey()
+        );
     }
 }

@@ -40,7 +40,7 @@ trait Collectionable
      *
      * @return \LMS\Facade\Assist\Collection
      */
-    protected function toCollection(array $entities, array $props = []): Collection
+    public function toCollection(array $entities, array $props = []): Collection
     {
         $result = collect(
             array_map(function (DomainObjectInterface $entity) {
@@ -57,7 +57,7 @@ trait Collectionable
      * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $entity
      * @return array
      */
-    protected function callObjectGetters(DomainObjectInterface $entity): array
+    public function callObjectGetters(DomainObjectInterface $entity): array
     {
         $result = [];
 
