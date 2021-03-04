@@ -26,13 +26,19 @@ namespace LMS\Facade\Assist;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 class Pluralizer
 {
+    /**
+     * @var Inflector
+     */
+    protected static $inflectorInstance;
+
     /**
      * Uncountable word forms.
      *
@@ -83,6 +89,19 @@ class Pluralizer
     ];
 
     /**
+     * Returns an instance of InflectorFactory.
+     *
+     * @return Inflector
+     */
+    public static function getInflectorFactory(): Inflector
+    {
+        if (static::$inflectorInstance === null) {
+            static::$inflectorInstance = InflectorFactory::create()->build();
+        }
+        return static::$inflectorInstance;
+    }
+
+    /**
      * Get the plural form of an English word.
      *
      * @param  string  $value
@@ -95,7 +114,7 @@ class Pluralizer
             return $value;
         }
 
-        $plural = Inflector::pluralize($value);
+        $plural = static::getInflectorFactory()->pluralize($value);
 
         return static::matchCase($plural, $value);
     }
@@ -108,7 +127,7 @@ class Pluralizer
      */
     public static function singular($value)
     {
-        $singular = Inflector::singularize($value);
+        $singular = static::getInflectorFactory()->singularize($value);
 
         return static::matchCase($singular, $value);
     }
