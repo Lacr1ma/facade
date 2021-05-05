@@ -27,7 +27,9 @@ namespace LMS\Facade\Extbase;
  * ************************************************************* */
 
 use LMS\Facade\ObjectManageable;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -79,6 +81,26 @@ class Plugin
      */
     public static function getExtensionService(): ExtensionService
     {
-        return ObjectManageable::createObject(ExtensionService::class);
+        $service = ObjectManageable::createObject(ExtensionService::class);
+        $service->injectConfigurationManager(self::getConfigurationManager());
+
+        return $service;
+    }
+
+    /**
+     * Returns the Configuration Manager
+     *
+     * @psalm-suppress MoreSpecificReturnType
+     * @psalm-suppress LessSpecificReturnStatement
+     * @return \TYPO3\CMS\Extbase\Configuration\ConfigurationManager
+     */
+    private static function getConfigurationManager(): ConfigurationManager
+    {
+        $contentRenderer = ObjectManageable::createObject(ContentObjectRenderer::class);
+
+        $config = ObjectManageable::createObject(ConfigurationManager::class);
+        $config->setContentObject($contentRenderer);
+
+        return $config;
     }
 }
