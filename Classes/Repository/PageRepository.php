@@ -72,7 +72,7 @@ class PageRepository extends \TYPO3\CMS\Frontend\Page\PageRepository
                 $uidList = [];
                 foreach ($result as $record) {
                     $uidList[] = $record['uid'];
-                    $uidList = array_merge($uidList, $this->findSubPages($record['uid'])->toArray());
+                    $uidList = array_merge($uidList, $this->findSubPages((int)$record['uid'])->toArray());
                 }
 
                 return Collection::make($uidList);
@@ -95,7 +95,7 @@ class PageRepository extends \TYPO3\CMS\Frontend\Page\PageRepository
         $menu = [];
         foreach ($result as $record) {
             $menu[$record['uid']] = $record;
-            $menu[$record['uid']]['children'] = $this->buildTree($record['uid'])->toArray();
+            $menu[$record['uid']]['children'] = $this->buildTree((int)$record['uid'])->toArray();
         }
 
         return Collection::make($menu)->values();
