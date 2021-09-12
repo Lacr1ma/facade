@@ -27,7 +27,8 @@ namespace LMS\Facade\Extbase;
  * ************************************************************* */
 
 use LMS\Facade\ObjectManageable;
-use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Http\ResponseFactory;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
 /**
@@ -38,9 +39,9 @@ class Redirect
     /**
      * Attempt to redirect user to requested page uid
      */
-    public static function toPage(int $pid): void
+    public static function toPage(int $pid): Response
     {
-        Redirect::toUri(
+        return Redirect::toUri(
             self::uriFor($pid)
         );
     }
@@ -48,9 +49,11 @@ class Redirect
     /**
      * Attempt to redirect user to the passed URI
      */
-    public static function toUri(string $uri, string $status = HttpUtility::HTTP_STATUS_303): void
+    public static function toUri(string $uri, int $status = 303): Response
     {
-        HttpUtility::redirect($uri, $status);
+        return self::responseFactory()
+            ->createResponse($status)
+            ->withAddedHeader('location', $uri);
     }
 
     /**
@@ -68,5 +71,10 @@ class Redirect
     public static function uriBuilder(): UriBuilder
     {
         return ObjectManageable::createObject(UriBuilder::class)->reset();
+    }
+
+    public static function responseFactory(): ResponseFactory
+    {
+        return ObjectManageable::createObject(ResponseFactory::class);
     }
 }
