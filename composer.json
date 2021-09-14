@@ -1,5 +1,6 @@
 {
 	"name": "lms/facade",
+	"type": "typo3-cms-extension",
 	"description": "Contains number of different helpers for other extensions",
 	"license": "MIT",
 	"authors": [
@@ -27,7 +28,13 @@
 			"LMS\\Facade\\Tests\\": "Tests"
 		}
 	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "facade"
+		}
+	},
 	"replace": {
-		"tightenco/collect": "^8.34.0"
+		"tightenco/collect": "^8.34.0",
+		"lms/facade": "self.version"
 	}
 }
