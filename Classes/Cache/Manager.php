@@ -27,8 +27,9 @@ namespace LMS\Facade\Cache;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\{ObjectManageable, StaticCreator};
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 
 /**
  * @psalm-suppress PropertyNotSetInConstructor
@@ -36,26 +37,16 @@ use TYPO3\CMS\Core\Cache\CacheManager;
  */
 class Manager
 {
-    use StaticCreator;
+    private FrontendInterface $cache;
 
-    /**
-     * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
-     */
-    private $cache;
-
-    /**
-     * @param string $extKey
-     */
-    public function __construct(string $extKey)
+    public function __construct(CacheManager $manager, string $extKey = '')
     {
-        $manager = ObjectManageable::createObject(CacheManager::class);
-
-        $this->cache = $manager->getCache($extKey);
+        try {
+            $this->cache = $manager->getCache($extKey);
+        } catch (NoSuchCacheException $e) {}
     }
 
     /**
-     * Attempt to get the cached data.
-     *
      * @see FrontendInterface::get
      */
     public function take(string $key)
@@ -66,8 +57,6 @@ class Manager
     }
 
     /**
-     * Attempt to save value in cache.
-     *
      * @see FrontendInterface::set
      */
     public function put(string $key, $value)

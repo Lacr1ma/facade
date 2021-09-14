@@ -28,23 +28,18 @@ namespace LMS\Facade\Assist;
 
 use stdClass;
 use Countable;
-use Exception;
 use ArrayAccess;
-use Traversable;
 use ArrayIterator;
-use CachingIterator;
-use JsonSerializable;
 use IteratorAggregate;
 use LMS\Facade\Traits\Macroable;
 use LMS\Facade\Traits\EnumeratesValues;
 use LMS\Facade\Contracts\Jsonable;
 use LMS\Facade\Contracts\Arrayable;
-use LMS\Facade\Assist\Debug\Dumper;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate, Jsonable, JsonSerializable
+class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate, Jsonable
 {
     use EnumeratesValues, Macroable;
 

@@ -26,18 +26,28 @@ namespace LMS\Facade\Controller\Base;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use TYPO3\CMS\Extbase\{DomainObject\DomainObjectInterface, Persistence\RepositoryInterface};
-use Psr\Http\Message\ResponseInterface;
+use LMS\Facade\Extbase\Redirect;
+use TYPO3\CMS\Extbase\{DomainObject\DomainObjectInterface,
+    Mvc\Controller\ActionController,
+    Persistence\RepositoryInterface};
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-abstract class ApiController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+abstract class ApiController extends ActionController
 {
     /**
      * {@inheritdoc}
      */
     public $view;
+
+    public Redirect $redirect;
+
+    public function __construct()
+    {
+        $this->redirect = GeneralUtility::makeInstance(Redirect::class);
+    }
 
     protected function getEntity(int $uid): ?DomainObjectInterface
     {
@@ -53,14 +63,4 @@ abstract class ApiController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
      * @see \TYPO3\CMS\Extbase\Mvc\View\JsonView::setVariablesToRender()
      */
     abstract protected function getRootName(): string;
-
-    protected function jsonResponse(string $json = null): ResponseInterface
-    {
-        $response = $this->responseFactory->createResponse()
-            ->withHeader('Content-Type', 'application/json; charset=utf-8');
-
-        $response->getBody()->write($json ?? $this->view->render());
-
-        return $response;
-    }
 }

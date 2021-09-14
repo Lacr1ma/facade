@@ -37,9 +37,7 @@ class JsonView extends \TYPO3\CMS\Extbase\Mvc\View\JsonView
      * Always transforming Object Storage to Arrays for the JSON view
      *
      * @param mixed $value
-     * @param array $configuration
-     *
-     * @return array
+     * @param bool $firstLevel
      */
     protected function transformValue($value, array $configuration, $firstLevel = false)
     {

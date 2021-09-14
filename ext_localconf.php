@@ -1,7 +1,7 @@
 <?php
-declare(strict_types = 1);
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
 
-namespace LMS\Facade\Assist;
+declare(strict_types = 1);
 
 /* * *************************************************************
  *
@@ -26,42 +26,8 @@ namespace LMS\Facade\Assist;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-/**
- * @author Sergey Borulko <borulkosergey@icloud.com>
- */
-class HigherOrderTapProxy
-{
-    /**
-     * The target being tapped.
-     *
-     * @var mixed
-     */
-    public $target;
+defined('TYPO3') or die();
 
-    /**
-     * Create a new tap proxy instance.
-     *
-     * @param mixed $target
-     *
-     * @return void
-     */
-    public function __construct($target)
-    {
-        $this->target = $target;
-    }
-
-    /**
-     * Dynamically pass method calls to the target.
-     *
-     * @param string $method
-     * @param array  $parameters
-     *
-     * @return mixed
-     */
-    public function __call($method, $parameters)
-    {
-        $this->target->{$method}(...$parameters);
-
-        return $this->target;
-    }
+if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['tx_facade'])) {
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['tx_facade'] = [];
 }

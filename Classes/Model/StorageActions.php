@@ -1,4 +1,7 @@
 <?php
+/** @noinspection PhpUndefinedMethodInspection */
+/** @noinspection PhpInternalEntityUsedInspection */
+
 declare(strict_types = 1);
 
 namespace LMS\Facade\Model;
@@ -26,8 +29,9 @@ namespace LMS\Facade\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use \TYPO3\CMS\Extbase\Persistence\Repository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
+use TYPO3\CMS\Extbase\Persistence\RepositoryInterface;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -37,11 +41,11 @@ trait StorageActions
     /**
      * @psalm-suppress InvalidStringClass
      */
-    public static function repository(): Repository
+    public static function repository(): RepositoryInterface
     {
         $repository = ClassNamingUtility::translateModelNameToRepositoryName(get_called_class());
 
-        return $repository::make();
+        return GeneralUtility::makeInstance($repository);
     }
 
     public static function create(array $properties = []): self
@@ -67,6 +71,7 @@ trait StorageActions
      * Persists the new entity or updates it
      *
      * @psalm-suppress InternalMethod
+     * @noinspection PhpUndefinedMethodInspection
      */
     public function save(): void
     {

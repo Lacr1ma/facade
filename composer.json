@@ -11,11 +11,8 @@
 	"require": {
 		"php": ">=7.4",
 		"ext-mbstring": "*",
-		"doctrine/inflector": "^1.3",
-		"nesbot/carbon": "^2.53"
-	},
-	"replace": {
-		"tightenco/collect": "^7.0"
+
+		"nesbot/carbon": "^2.53.1"
 	},
 	"autoload": {
 		"psr-4": {
@@ -29,5 +26,8 @@
 		"psr-4": {
 			"LMS\\Facade\\Tests\\": "Tests"
 		}
+	},
+	"replace": {
+		"tightenco/collect": "^8.34.0"
 	}
 }

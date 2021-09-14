@@ -27,12 +27,13 @@ namespace LMS\Facade\Model;
  * ************************************************************* */
 
 use LMS\Facade\Assist\Collection;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use LMS\Facade\Extbase\{ExtensionHelper, TypoScriptConfiguration};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-abstract class AbstractModel extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+abstract class AbstractModel extends AbstractEntity
 {
     use StorageActions, ExtensionHelper, PropertyHelper;
 

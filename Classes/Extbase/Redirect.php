@@ -26,55 +26,55 @@ namespace LMS\Facade\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\ObjectManageable;
-use TYPO3\CMS\Core\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\ResponseFactory;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-class Redirect
+class Redirect implements SingletonInterface
 {
-    /**
-     * Attempt to redirect user to requested page uid
-     */
-    public static function toPage(int $pid): Response
+    private UriBuilder $uri;
+    private ResponseFactory $factory;
+
+    public function __construct(ResponseFactory $factory, UriBuilder $uri)
     {
-        return Redirect::toUri(
-            self::uriFor($pid)
-        );
+        $this->factory = $factory;
+        $this->uri = $uri->reset();
     }
 
-    /**
-     * Attempt to redirect user to the passed URI
-     */
-    public static function toUri(string $uri, int $status = 303): Response
+    public function toPage(int $pid): ResponseInterface
     {
-        return self::responseFactory()
-            ->createResponse($status)
-            ->withAddedHeader('location', $uri);
+        $url = $this->uriFor($pid);
+
+        return $this->toUri($url);
     }
 
-    /**
-     * Build the url for the passed page
-     */
-    public static function uriFor(int $pid, bool $absolute = false): string
+    public function toUri(string $uri, int $status = 303): ResponseInterface
     {
-        return Redirect::uriBuilder()
+        $response = $this->factory->createResponse($status);
+
+        return $response->withAddedHeader('location', $uri);
+    }
+
+    public function uriFor(int $pid, bool $absolute = false): string
+    {
+        return $this->uri
             ->setLinkAccessRestrictedPages(true)
             ->setCreateAbsoluteUri($absolute)
             ->setTargetPageUid($pid)
             ->build();
     }
 
-    public static function uriBuilder(): UriBuilder
+    public function factory(): ResponseFactory
     {
-        return ObjectManageable::createObject(UriBuilder::class)->reset();
+        return $this->factory;
     }
 
-    public static function responseFactory(): ResponseFactory
+    public function uriBuilder(): UriBuilder
     {
-        return ObjectManageable::createObject(ResponseFactory::class);
+        return $this->uri;
     }
 }

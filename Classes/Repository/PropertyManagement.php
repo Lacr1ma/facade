@@ -27,10 +27,6 @@ namespace LMS\Facade\Repository;
  * ************************************************************* */
 
 use LMS\Facade\Extbase\QueryBuilder;
-use LMS\Facade\ObjectManageable;
-use TYPO3\CMS\Core\Utility\ClassNamingUtility;
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
-use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>

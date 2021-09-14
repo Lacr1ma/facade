@@ -26,8 +26,7 @@ namespace LMS\Facade\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
-use LMS\Facade\{Assist\Collection, Extbase\User, StaticCreator};
+use LMS\Facade\Extbase\User;
 use LMS\Facade\Model\Property\{CreationDate, Endtime, IsOnline};
 
 /**
@@ -35,19 +34,13 @@ use LMS\Facade\Model\Property\{CreationDate, Endtime, IsOnline};
  */
 abstract class AbstractUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
 {
-    use StaticCreator, CreationDate, Endtime, IsOnline, StorageActions, PropertyHelper;
+    use CreationDate, Endtime, IsOnline, StorageActions, PropertyHelper;
 
-    /**
-     * {@inheritDoc}
-     */
     public static function currentUid(): int
     {
         return User::currentUid();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function isLoggedIn(): bool
     {
         return User\StateContext::isLoggedIn();

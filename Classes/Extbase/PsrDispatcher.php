@@ -26,20 +26,22 @@ namespace LMS\Facade\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use TYPO3\CMS\Core\{Utility\GeneralUtility, EventDispatcher\EventDispatcher};
+use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
 class PsrDispatcher
 {
-    public static function emit(object $event): object
+    private EventDispatcher $dispatcher;
+
+    public function __construct(EventDispatcher $dispatcher)
     {
-        return self::dispatcher()->dispatch($event);
+        $this->dispatcher = $dispatcher;
     }
 
-    public static function dispatcher(): EventDispatcher
+    public function emit(object $event): object
     {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Core\EventDispatcher\EventDispatcher::class);
+        return $this->dispatcher->dispatch($event);
     }
 }

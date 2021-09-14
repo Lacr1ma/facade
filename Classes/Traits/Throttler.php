@@ -26,77 +26,67 @@ namespace LMS\Facade\Traits;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Symfony\Component\HttpFoundation\Request;
 use LMS\Facade\{Cache\RateLimiter, Extbase\ExtensionHelper};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-trait Throttler
+class Throttler
 {
     use ExtensionHelper;
 
+    private int $maxAttempts;
+    private int $decayMinutes;
+    private RateLimiter $limiter;
+
+    public function __construct(int $maxAttempts = 30, int $decayMinutes = 5)
+    {
+        $this->maxAttempts = $maxAttempts;
+        $this->decayMinutes = $decayMinutes;
+
+        $this->limiter = GeneralUtility::makeInstance(RateLimiter::class);
+    }
+
+    public function limiter(): RateLimiter
+    {
+        return $this->limiter;
+    }
+
     /**
      * Determine if the session has too many attempts
-     *
-     * @return bool
      */
-    protected function hasTooManyAttempts(): bool
+    public function hasTooManyAttempts(): bool
     {
-        return $this->limiter()->tooManyAttempts(
-            $this->throttleKey(), $this->maxAttempts()
+        return $this->limiter->tooManyAttempts(
+            $this->throttleKey(), $this->maxAttempts
         );
     }
 
     /**
      * Increment the attempts count for the session.
      */
-    protected function incrementAttempts(): void
+    public function incrementAttempts(): void
     {
-        $this->limiter()->hit(
-            $this->throttleKey(), $this->decayMinutes() * 60
+        $this->limiter->hit(
+            $this->throttleKey(), $this->decayMinutes * 60
         );
     }
 
     /**
      * Clear registered attempts associated with REQUEST IP
      */
-    protected function clearAttempts(): void
+    public function clearAttempts(): void
     {
-        $this->limiter()->clear($this->throttleKey());
+        $this->limiter->clear($this->throttleKey());
     }
 
     /**
      * Use request ip address as a throttle key
-     *
-     * @return string
      */
-    protected function throttleKey(): string
+    public function throttleKey(): string
     {
         return md5(Request::createFromGlobals()->getClientIp() ?? '');
     }
-
-    /**
-     * Get the rate limiter instance.
-     *
-     * @return \LMS\Facade\Cache\RateLimiter
-     */
-    protected function limiter(): RateLimiter
-    {
-        return RateLimiter::make(self::extensionTypoScriptKey());
-    }
-
-    /**
-     * Get the maximum number of attempts to allow.
-     *
-     * @return int
-     */
-    abstract public function maxAttempts(): int;
-
-    /**
-     * Get the number of minutes to throttle for.
-     *
-     * @return int
-     */
-    abstract protected function decayMinutes(): int;
 }

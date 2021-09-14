@@ -27,7 +27,7 @@ namespace LMS\Facade\Logger;
  * ************************************************************* */
 
 use Psr\Log\LoggerInterface;
-use LMS\Facade\ObjectManageable;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Log\{LogManager, LogManagerInterface};
 
 /**
@@ -46,6 +46,6 @@ class Logger
      */
     public static function logManager(): LogManagerInterface
     {
-        return ObjectManageable::createObject(LogManager::class);
+        return GeneralUtility::makeInstance(LogManager::class);
     }
 }

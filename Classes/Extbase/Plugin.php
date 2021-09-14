@@ -26,7 +26,7 @@ namespace LMS\Facade\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\ObjectManageable;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -69,7 +69,7 @@ class Plugin
      */
     public static function getExtensionService(): ExtensionService
     {
-        $service = ObjectManageable::createObject(ExtensionService::class);
+        $service = GeneralUtility::makeInstance(ExtensionService::class);
         $service->injectConfigurationManager(self::getConfigurationManager());
 
         return $service;
@@ -83,9 +83,9 @@ class Plugin
      */
     private static function getConfigurationManager(): ConfigurationManager
     {
-        $contentRenderer = ObjectManageable::createObject(ContentObjectRenderer::class);
+        $contentRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
 
-        $config = ObjectManageable::createObject(ConfigurationManager::class);
+        $config = GeneralUtility::makeInstance(ConfigurationManager::class);
         $config->setContentObject($contentRenderer);
 
         return $config;

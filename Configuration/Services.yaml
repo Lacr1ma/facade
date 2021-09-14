@@ -1,0 +1,17 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: true
+
+  LMS\Facade\:
+    resource: '../Classes/*'
+
+  cache.facade:
+    class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+    factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
+    arguments: ['tx_facade']
+
+  LMS\Facade\Cache\RateLimiter:
+    arguments:
+      - '@cache.facade'

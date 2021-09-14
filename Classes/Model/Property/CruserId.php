@@ -31,10 +31,7 @@ namespace LMS\Facade\Model\Property;
  */
 trait CruserId
 {
-    /**
-     * @var int
-     */
-    protected $cruserId = 0;
+    protected int $cruserId = 0;
 
     public function getCruserId(): int
     {

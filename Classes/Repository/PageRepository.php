@@ -35,42 +35,21 @@ use LMS\Facade\Extbase\ExtensionHelper;
  * @psalm-suppress PropertyNotSetInConstructor
  * @author         Borulko Sergey <borulkosergey@icloud.com>
  */
-class PageRepository extends \TYPO3\CMS\Frontend\Page\PageRepository
+class PageRepository extends \TYPO3\CMS\Core\Domain\Repository\PageRepository
 {
-    use StaticCreator, ExtensionHelper, CacheQuery, PropertyManagement;
-
-    public function findByIds(array $uidList): Collection
-    {
-        return static::cacheProxy(
-            (function () use ($uidList) {
-                $pages = [];
-
-                foreach ($uidList as $uid) {
-                    $pages[] = $this->getPage_noCheck((int)$uid);
-
-                    return Collection::make($pages);
-                }
-            }),
-            compact('uidList')
-        );
-    }
+    use StaticCreator, ExtensionHelper, PropertyManagement;
 
     public function findSubPages(int $page): Collection
     {
-        return static::cacheProxy(
-            (function () use ($page) {
-                $result = $this->getMenu($page, 'uid', 'sorting', 'nav_hide = 0');
+        $result = $this->getMenu($page, 'uid', 'sorting', 'nav_hide = 0');
 
-                $uidList = [];
-                foreach ($result as $record) {
-                    $uidList[] = $record['uid'];
-                    $uidList = array_merge($uidList, $this->findSubPages($record['uid'])->toArray());
-                }
+        $uidList = [];
+        foreach ($result as $record) {
+            $uidList[] = $record['uid'];
+            $uidList = array_merge($uidList, $this->findSubPages($record['uid'])->toArray());
+        }
 
-                return Collection::make($uidList);
-            }),
-            compact('page')
-        );
+        return Collection::make($uidList);
     }
 
     public function buildTree(int $startPage): Collection

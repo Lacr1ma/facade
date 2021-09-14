@@ -29,13 +29,11 @@ namespace LMS\Facade\Traits;
 use Exception;
 use Traversable;
 use CachingIterator;
-use JsonSerializable;
 use LMS\Facade\Assist\Arr;
 use LMS\Facade\Assist\Enumerable;
 use LMS\Facade\Assist\Collection;
 use LMS\Facade\Contracts\Jsonable;
 use LMS\Facade\Contracts\Arrayable;
-use Symfony\Component\VarDumper\VarDumper;
 use LMS\Facade\Assist\HigherOrderCollectionProxy;
 
 /**
@@ -171,22 +169,6 @@ trait EnumeratesValues
         call_user_func_array([$this, 'dump'], $args);
 
         die(1);
-    }
-
-    /**
-     * Dump the items.
-     *
-     * @return $this
-     */
-    public function dump()
-    {
-        (new static(func_get_args()))
-            ->push($this)
-            ->each(function ($item) {
-                VarDumper::dump($item);
-            });
-
-        return $this;
     }
 
     /**

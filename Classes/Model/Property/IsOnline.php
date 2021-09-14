@@ -34,10 +34,7 @@ use LMS\Facade\Extbase\QueryBuilder;
  */
 trait IsOnline
 {
-    /**
-     * @var int
-     */
-    protected $isOnline = 0;
+    protected int $isOnline = 0;
 
     public function resetOnlineTime(): void
     {

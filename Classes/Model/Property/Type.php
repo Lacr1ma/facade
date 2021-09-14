@@ -31,10 +31,7 @@ namespace LMS\Facade\Model\Property;
  */
 trait Type
 {
-    /**
-     * @var int
-     */
-    protected $type = 0;
+    protected int$type = 0;
 
     public function getType(): int
     {

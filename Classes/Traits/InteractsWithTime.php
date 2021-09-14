@@ -35,10 +35,6 @@ trait InteractsWithTime
 {
     /**
      * Get the "available at" UNIX timestamp.
-     *
-     * @param int $delayInMinutes
-     *
-     * @return int
      */
     public function availableAt(int $delayInMinutes): int
     {

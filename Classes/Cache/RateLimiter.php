@@ -26,8 +26,8 @@ namespace LMS\Facade\Cache;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use TYPO3\CMS\Core\Cache\CacheManager;
-use LMS\Facade\{Traits\InteractsWithTime, ObjectManageable, StaticCreator};
+use LMS\Facade\Traits\InteractsWithTime;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 
 /**
  * @psalm-suppress PropertyNotSetInConstructor
@@ -35,32 +35,17 @@ use LMS\Facade\{Traits\InteractsWithTime, ObjectManageable, StaticCreator};
  */
 class RateLimiter
 {
-    use InteractsWithTime, StaticCreator;
+    use InteractsWithTime;
 
-    /**
-     * The cache store implementation.
-     *
-     * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
-     */
-    private $cache;
+    private FrontendInterface $cache;
 
-    /**
-     * @param string $extKey
-     */
-    public function __construct(string $extKey)
+    public function __construct(FrontendInterface $cache)
     {
-        $manager = ObjectManageable::createObject(CacheManager::class);
-
-        $this->cache = $manager->getCache($extKey);
+        $this->cache = $cache;
     }
 
     /**
      * Determine if the given key has been "accessed" too many times.
-     *
-     * @param string $key
-     * @param int    $maxAttempts
-     *
-     * @return bool
      */
     public function tooManyAttempts(string $key, int $maxAttempts): bool
     {
@@ -73,10 +58,6 @@ class RateLimiter
 
     /**
      * Increment the counter for a given key for a given decay time.
-     *
-     * @param string $key
-     * @param int    $decayMinutes
-     *
      */
     public function hit(string $key, int $decayMinutes = 1): void
     {
@@ -91,10 +72,6 @@ class RateLimiter
 
     /**
      * Get the number of attempts for the given key.
-     *
-     * @param string $key
-     *
-     * @return int
      */
     public function attempts(string $key): int
     {
@@ -103,10 +80,6 @@ class RateLimiter
 
     /**
      * Reset the number of attempts for the given key.
-     *
-     * @param string $key
-     *
-     * @return bool
      */
     public function resetAttempts(string $key): bool
     {
@@ -115,8 +88,6 @@ class RateLimiter
 
     /**
      * Clear the hits and lockout timer for the given key.
-     *
-     * @param string $key
      */
     public function clear(string $key): void
     {
@@ -127,10 +98,6 @@ class RateLimiter
 
     /**
      * Get the number of seconds until the "key" is accessible again.
-     *
-     * @param string $key
-     *
-     * @return int
      */
     public function availableIn(string $key): int
     {

@@ -33,10 +33,7 @@ use LMS\Facade\Extbase\QueryBuilder;
  */
 trait User
 {
-    /**
-     * @var int
-     */
-    protected $user = 0;
+    protected int $user = 0;
 
     public function getUser(): int
     {

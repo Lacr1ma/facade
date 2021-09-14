@@ -55,7 +55,7 @@ class HigherOrderCollectionProxy
      *
      * @return void
      */
-    public function __construct(Collection $collection, $method)
+    public function __construct(Collection $collection, string $method = '')
     {
         $this->method = $method;
         $this->collection = $collection;

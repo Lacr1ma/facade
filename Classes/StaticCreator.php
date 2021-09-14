@@ -26,6 +26,8 @@ namespace LMS\Facade;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
@@ -33,7 +35,7 @@ trait StaticCreator
 {
     public static function make(...$arguments): self
     {
-        return new static(...$arguments);
+        return GeneralUtility::makeInstance(get_called_class(), ...$arguments);
     }
 
     /**
@@ -41,7 +43,7 @@ trait StaticCreator
      */
     public static function makeWithProps(array $properties = []): self
     {
-        $entity = new static();
+        $entity = GeneralUtility::makeInstance(get_called_class());
 
         foreach ($properties as $propertyName => $propertyValue) {
             $entity->_setProperty($propertyName, $propertyValue);

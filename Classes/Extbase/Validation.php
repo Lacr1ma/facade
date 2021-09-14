@@ -33,7 +33,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
  */
 class Validation
 {
-    public static function parseErorrs(Arguments $args): array
+    public static function parseErrors(Arguments $args): array
     {
         $errors = [];
 

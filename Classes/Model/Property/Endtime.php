@@ -31,14 +31,11 @@ namespace LMS\Facade\Model\Property;
  */
 trait Endtime
 {
-    /**
-     * @var int
-     */
-    protected $endtime;
+    protected int $endtime = 0;
 
     public function getEndtime(): int
     {
-        return (int)$this->endtime;
+        return $this->endtime;
     }
 
     public function setEndtime(int $endtime): void

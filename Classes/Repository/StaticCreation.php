@@ -1,4 +1,6 @@
 <?php
+/** @noinspection PhpParamsInspection */
+
 declare(strict_types = 1);
 
 namespace LMS\Facade\Repository;
@@ -38,8 +40,6 @@ trait StaticCreation
      * ExampleRepository::make()->findAll();
      *
      * Allow to create a fresh repository instance by static method ::make()
-     *
-     * @return $this
      */
     public static function make(): self
     {

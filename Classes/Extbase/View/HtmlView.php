@@ -26,9 +26,10 @@ namespace LMS\Facade\Extbase\View;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
-use LMS\Facade\{Extbase\ExtensionHelper, ObjectManageable, Extbase\TypoScriptConfiguration as TS};
+use LMS\Facade\{Extbase\ExtensionHelper, Extbase\TypoScriptConfiguration as TS};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -58,11 +59,11 @@ trait HtmlView
 
     public function typoScriptService(): TypoScriptService
     {
-        return ObjectManageable::createObject(TypoScriptService::class);
+        return GeneralUtility::makeInstance(TypoScriptService::class);
     }
 
     public function createView(): StandaloneView
     {
-        return ObjectManageable::createObject(StandaloneView::class);
+        return GeneralUtility::makeInstance(StandaloneView::class);
     }
 }

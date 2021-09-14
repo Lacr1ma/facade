@@ -26,7 +26,7 @@ namespace LMS\Facade\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\ObjectManageable;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
@@ -72,7 +72,7 @@ trait CRUD
     public function produce(array $properties = []): AbstractEntity
     {
         /** @var AbstractEntity $object */
-        $object = ObjectManageable::createObject($this->getEntityClassName());
+        $object = GeneralUtility::makeInstance($this->getEntityClassName());
 
         foreach ($properties as $propertyName => $propertyValue) {
             $object->_setProperty($propertyName, $propertyValue);

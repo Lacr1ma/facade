@@ -33,10 +33,7 @@ use Carbon\Carbon;
  */
 trait UpdateDate
 {
-    /**
-     * @var int
-     */
-    protected $tstamp = 0;
+    protected int $tstamp = 0;
 
     public function getTstamp(): int
     {

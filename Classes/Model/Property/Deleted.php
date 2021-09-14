@@ -31,10 +31,7 @@ namespace LMS\Facade\Model\Property;
  */
 trait Deleted
 {
-    /**
-     * @var bool
-     */
-    protected $deleted;
+    protected bool $deleted = false;
 
     public function getDeleted(): bool
     {
@@ -43,7 +40,7 @@ trait Deleted
 
     public function isDeleted(): bool
     {
-        return (bool)$this->deleted;
+        return $this->deleted;
     }
 
     public function setDeleted(bool $deleted): void

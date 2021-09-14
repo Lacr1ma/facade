@@ -53,7 +53,6 @@ class StateContext
      *
      * @psalm-suppress LessSpecificReturnStatement
      * @psalm-suppress MoreSpecificReturnType
-     * @return \TYPO3\CMS\Core\Context\Context
      */
     public static function getTypo3Context(): Context
     {

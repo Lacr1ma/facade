@@ -27,7 +27,7 @@ namespace LMS\Facade\Extbase;
  * ************************************************************* */
 
 use LMS\Facade\Assist\Str;
-use LMS\Facade\ObjectManageable;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request as ExtbaseRequest;
 
 /**
@@ -61,6 +61,6 @@ class Request
 
     private static function create(): ExtbaseRequest
     {
-        return ObjectManageable::createObject(ExtbaseRequest::class);
+        return GeneralUtility::makeInstance(ExtbaseRequest::class);
     }
 }

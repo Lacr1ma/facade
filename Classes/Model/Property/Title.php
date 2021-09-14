@@ -31,10 +31,7 @@ namespace LMS\Facade\Model\Property;
  */
 trait Title
 {
-    /**
-     * @var string
-     */
-    protected $title = '';
+    protected string $title = '';
 
     public function getTitle(): string
     {

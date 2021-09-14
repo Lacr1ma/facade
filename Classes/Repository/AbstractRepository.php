@@ -27,16 +27,17 @@ namespace LMS\Facade\Repository;
  * ************************************************************* */
 
 use LMS\Facade\Assist\Collection;
+use TYPO3\CMS\Extbase\Persistence\Repository;
 use LMS\Facade\Repository\CRUD as ProvidesCRUDActions;
-use LMS\Facade\{Extbase\QueryBuilder, Extbase\TypoScriptConfiguration, Extbase\ExtensionHelper};
+use LMS\Facade\{Extbase\TypoScriptConfiguration, Extbase\ExtensionHelper};
 
 /**
  * @psalm-suppress PropertyNotSetInConstructor
  * @author         Borulko Sergey <borulkosergey@icloud.com>
  */
-abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+abstract class AbstractRepository extends Repository
 {
-    use ProvidesCRUDActions, PropertyManagement, StaticCreation, ExtensionHelper, Collectionable, CacheQuery;
+    use ProvidesCRUDActions, PropertyManagement, StaticCreation, ExtensionHelper, Collectionable;
 
     public function initializeObject(): void
     {

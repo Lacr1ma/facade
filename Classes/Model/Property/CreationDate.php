@@ -33,14 +33,11 @@ use Carbon\Carbon;
  */
 trait CreationDate
 {
-    /**
-     * @var int
-     */
-    protected $crdate = 0;
+    protected int $crdate = 0;
 
     public function getCrdate(): int
     {
-        return (int)$this->crdate;
+        return $this->crdate;
     }
 
     public function setCrdate(int $crdate): void

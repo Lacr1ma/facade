@@ -31,10 +31,7 @@ namespace LMS\Facade\Model\Property;
  */
 trait Description
 {
-    /**
-     * @var string
-     */
-    protected $description = '';
+    protected string $description = '';
 
     public function getDescription(): string
     {

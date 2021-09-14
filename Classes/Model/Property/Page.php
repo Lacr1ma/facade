@@ -31,10 +31,7 @@ namespace LMS\Facade\Model\Property;
  */
 trait Page
 {
-    /**
-     * @var int
-     */
-    protected $page = 0;
+    protected int $page = 0;
 
     public function setPage(int $page): void
     {
