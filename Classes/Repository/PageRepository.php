@@ -37,19 +37,40 @@ use LMS\Facade\Extbase\ExtensionHelper;
  */
 class PageRepository extends \TYPO3\CMS\Core\Domain\Repository\PageRepository
 {
-    use StaticCreator, ExtensionHelper, PropertyManagement;
+    use StaticCreator, ExtensionHelper, CacheQuery, PropertyManagement;
+
+    public function findByIds(array $uidList): Collection
+    {
+        return static::cacheProxy(
+            (function () use ($uidList) {
+                $pages = [];
+
+                foreach ($uidList as $uid) {
+                    $pages[] = $this->getPage_noCheck((int)$uid);
+
+                    return Collection::make($pages);
+                }
+            }),
+            compact('uidList')
+        );
+    }
 
     public function findSubPages(int $page): Collection
     {
-        $result = $this->getMenu($page, 'uid', 'sorting', 'nav_hide = 0');
+        return static::cacheProxy(
+            (function () use ($page) {
+                $result = $this->getMenu($page, 'uid', 'sorting', 'nav_hide = 0');
 
-        $uidList = [];
-        foreach ($result as $record) {
-            $uidList[] = $record['uid'];
-            $uidList = array_merge($uidList, $this->findSubPages($record['uid'])->toArray());
-        }
+                $uidList = [];
+                foreach ($result as $record) {
+                    $uidList[] = $record['uid'];
+                    $uidList = array_merge($uidList, $this->findSubPages($record['uid'])->toArray());
+                }
 
-        return Collection::make($uidList);
+                return Collection::make($uidList);
+            }),
+            compact('page')
+        );
     }
 
     public function buildTree(int $startPage): Collection
