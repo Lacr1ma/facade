@@ -26,9 +26,9 @@ namespace LMS\Facade\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use TYPO3\CMS\Core\SingletonInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\ResponseFactory;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
 /**
@@ -36,45 +36,45 @@ use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
  */
 class Redirect implements SingletonInterface
 {
-    private UriBuilder $uri;
-    private ResponseFactory $factory;
+    private static UriBuilder $uri;
+    private static ResponseFactory $factory;
 
     public function __construct(ResponseFactory $factory, UriBuilder $uri)
     {
-        $this->factory = $factory;
-        $this->uri = $uri->reset();
+        self::$factory = $factory;
+        self::$uri = $uri->reset();
     }
 
-    public function toPage(int $pid): ResponseInterface
+    public static function toPage(int $pid): ResponseInterface
     {
-        $url = $this->uriFor($pid);
+        $url = self::uriFor($pid);
 
-        return $this->toUri($url);
+        return self::toUri($url);
     }
 
-    public function toUri(string $uri, int $status = 303): ResponseInterface
+    public static function toUri(string $uri, int $status = 303): ResponseInterface
     {
-        $response = $this->factory->createResponse($status);
+        $response = self::$factory->createResponse($status);
 
         return $response->withAddedHeader('location', $uri);
     }
 
-    public function uriFor(int $pid, bool $absolute = false): string
+    public static function uriFor(int $pid, bool $absolute = false): string
     {
-        return $this->uri
+        return self::$uri
             ->setLinkAccessRestrictedPages(true)
             ->setCreateAbsoluteUri($absolute)
             ->setTargetPageUid($pid)
             ->build();
     }
 
-    public function factory(): ResponseFactory
+    public static function factory(): ResponseFactory
     {
-        return $this->factory;
+        return self::$factory;
     }
 
-    public function uriBuilder(): UriBuilder
+    public static function uriBuilder(): UriBuilder
     {
-        return $this->uri;
+        return self::$uri;
     }
 }

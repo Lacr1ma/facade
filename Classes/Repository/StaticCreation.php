@@ -1,5 +1,6 @@
 <?php
 /** @noinspection PhpParamsInspection */
+/** @noinspection PhpMultipleClassDeclarationsInspection */
 
 declare(strict_types = 1);
 
@@ -29,6 +30,7 @@ namespace LMS\Facade\Repository;
  * ************************************************************* */
 
 use LMS\Facade\ObjectManageable;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\{Object\ObjectManagerInterface, Persistence\Generic\PersistenceManager};
 
 /**
@@ -54,7 +56,7 @@ trait StaticCreation
         parent::__construct($objectManager);
 
         $this->injectPersistenceManager(
-            ObjectManageable::createObject(PersistenceManager::class)
+            GeneralUtility::makeInstance(PersistenceManager::class)
         );
 
         $this->initializeObject();
@@ -65,5 +67,6 @@ trait StaticCreation
      */
     protected function initializeObject(): void
     {
+
     }
 }
