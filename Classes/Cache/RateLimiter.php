@@ -26,8 +26,10 @@ namespace LMS\Facade\Cache;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use LMS\Facade\StaticCreator;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use LMS\Facade\Traits\InteractsWithTime;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @psalm-suppress PropertyNotSetInConstructor
@@ -35,13 +37,21 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
  */
 class RateLimiter
 {
-    use InteractsWithTime;
+    use InteractsWithTime, StaticCreator;
 
-    private FrontendInterface $cache;
+    /**
+     * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+     */
+    private $cache;
 
-    public function __construct(FrontendInterface $cache)
+    /** 
+     * @noinspection PhpUnhandledExceptionInspection 
+     */
+    public function __construct(string $extKey)
     {
-        $this->cache = $cache;
+        $manager = GeneralUtility::makeInstance(CacheManager::class);
+
+        $this->cache = $manager->getCache($extKey);
     }
 
     /**
