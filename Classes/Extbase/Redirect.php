@@ -26,23 +26,23 @@ namespace LMS\Facade\Extbase;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use TYPO3\CMS\Core\SingletonInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\ResponseFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
  */
-class Redirect implements SingletonInterface
+class Redirect
 {
     private static UriBuilder $uri;
     private static ResponseFactory $factory;
 
-    public function __construct(ResponseFactory $factory, UriBuilder $uri)
+    public function __construct()
     {
-        self::$factory = $factory;
-        self::$uri = $uri->reset();
+        self::$uri = GeneralUtility::makeInstance(UriBuilder::class)->reset();
+        self::$factory = GeneralUtility::makeInstance(ResponseFactory::class);
     }
 
     public static function toPage(int $pid): ResponseInterface
