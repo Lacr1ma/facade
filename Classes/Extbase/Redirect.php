@@ -36,15 +36,6 @@ use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
  */
 class Redirect
 {
-    private static UriBuilder $uri;
-    private static ResponseFactory $factory;
-
-    public function __construct()
-    {
-        self::$uri = GeneralUtility::makeInstance(UriBuilder::class)->reset();
-        self::$factory = GeneralUtility::makeInstance(ResponseFactory::class);
-    }
-
     public static function toPage(int $pid): ResponseInterface
     {
         $url = self::uriFor($pid);
@@ -54,14 +45,14 @@ class Redirect
 
     public static function toUri(string $uri, int $status = 303): ResponseInterface
     {
-        $response = self::$factory->createResponse($status);
+        $response = self::factory()->createResponse($status);
 
         return $response->withAddedHeader('location', $uri);
     }
 
     public static function uriFor(int $pid, bool $absolute = false): string
     {
-        return self::$uri
+        return self::uriBuilder()
             ->setLinkAccessRestrictedPages(true)
             ->setCreateAbsoluteUri($absolute)
             ->setTargetPageUid($pid)
@@ -70,11 +61,11 @@ class Redirect
 
     public static function factory(): ResponseFactory
     {
-        return self::$factory;
+        return GeneralUtility::makeInstance(ResponseFactory::class);
     }
 
     public static function uriBuilder(): UriBuilder
     {
-        return self::$uri;
+        return GeneralUtility::makeInstance(UriBuilder::class)->reset();
     }
 }
