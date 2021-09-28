@@ -29,9 +29,8 @@ namespace LMS\Facade\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\ObjectManageable;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\{Object\ObjectManagerInterface, Persistence\Generic\PersistenceManager};
+use TYPO3\CMS\Extbase\{Object\ObjectManager, Object\ObjectManagerInterface, Persistence\Generic\PersistenceManager};
 
 /**
  * @author Sergey Borulko <borulkosergey@icloud.com>
@@ -45,7 +44,9 @@ trait StaticCreation
      */
     public static function make(): self
     {
-        return new static(ObjectManageable::getObjectManager());
+        $om = GeneralUtility::makeInstance(ObjectManager::class);
+
+        return new static($om);
     }
 
     /**
