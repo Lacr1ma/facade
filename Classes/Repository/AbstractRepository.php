@@ -1,4 +1,6 @@
 <?php
+/** @noinspection PhpParamsInspection */
+
 declare(strict_types = 1);
 
 namespace LMS\Facade\Repository;
@@ -57,6 +59,17 @@ abstract class AbstractRepository extends Repository
         return $this;
     }
 
+    public function withPid(int $pid): self
+    {
+        $settings = $this->createQuery()->getQuerySettings();
+
+        $this->setDefaultQuerySettings(
+            $settings->setRespectStoragePage(true)->setStoragePageIds([$pid])
+        );
+
+        return $this;
+    }
+
     public function getPid(): int
     {
         return TypoScriptConfiguration::getStoragePid($this->getExtensionKey()) ?: 0;
@@ -81,11 +94,11 @@ abstract class AbstractRepository extends Repository
 
     public function findByIds(array $uidList, array $props = []): Collection
     {
-        $enteties = array_map(function (int $uid) use ($props) {
+        $entities = array_map(function (int $uid) use ($props) {
             return $this->findById($uid, $props);
         }, $uidList);
 
-        return collect($enteties);
+        return collect($entities);
     }
 
     public function all(array $props = []): Collection
