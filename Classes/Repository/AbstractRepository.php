@@ -113,3 +113,4 @@ abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Reposit
         return $this->toCollection($this->findAll()->toArray(), $props);
     }
 }
+
