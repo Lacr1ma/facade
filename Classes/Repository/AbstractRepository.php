@@ -62,6 +62,17 @@ abstract class AbstractRepository extends \TYPO3\CMS\Extbase\Persistence\Reposit
         return $this;
     }
 
+    public function withPid(int $pid): self
+    {
+        $settings = $this->createQuery()->getQuerySettings();
+
+        $this->setDefaultQuerySettings(
+            $settings->setRespectStoragePage(true)->setStoragePageIds([$pid])
+        );
+
+        return $this;
+    }
+
     /**
      * Retrieve pid for the repository if it's set
      */
