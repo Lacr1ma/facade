@@ -28,6 +28,8 @@ declare(strict_types = 1);
 
 defined('TYPO3') or die();
 
-if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['tx_facade'])) {
+$cache = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'];
+
+if (!array_key_exists('tx_facade', $cache)) {
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['tx_facade'] = [];
 }
