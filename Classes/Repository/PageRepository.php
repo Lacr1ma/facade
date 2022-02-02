@@ -64,7 +64,7 @@ class PageRepository extends \TYPO3\CMS\Core\Domain\Repository\PageRepository
                 $uidList = [];
                 foreach ($result as $record) {
                     $uidList[] = $record['uid'];
-                    $uidList = array_merge($uidList, $this->findSubPages($record['uid'])->toArray());
+                    $uidList = array_merge($uidList, $this->findSubPages((int)$record['uid'])->toArray());
                 }
 
                 return Collection::make($uidList);
