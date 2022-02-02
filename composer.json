@@ -34,7 +34,6 @@
 		}
 	},
 	"replace": {
-		"tightenco/collect": "^8.34.0",
-		"lms/facade": "self.version"
+		"tightenco/collect": "^8.34.0"
 	}
 }
