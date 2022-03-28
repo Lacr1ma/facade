@@ -33,6 +33,13 @@ use LMS\Facade\Repository\PageRepository;
  */
 class PageByUidViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
 {
+    private PageRepository $pageRepository;
+
+    public function __construct(PageRepository $pageRepository)
+    {
+        $this->pageRepository = $pageRepository;
+    }
+
     /**
      * Page uid
      */
@@ -45,6 +52,6 @@ class PageByUidViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractView
     {
         $uid = (int)$this->arguments['uid'];
 
-        return (array)PageRepository::make()->findByIds([$uid])->first();
+        return (array)$this->pageRepository->findByIds([$uid])->first();
     }
 }

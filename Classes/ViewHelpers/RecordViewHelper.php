@@ -33,6 +33,13 @@ use LMS\Facade\Repository\PageRepository;
  */
 class RecordViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
 {
+    private PageRepository $pageRepository;
+
+    public function __construct(PageRepository $pageRepository)
+    {
+        $this->pageRepository = $pageRepository;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -47,6 +54,6 @@ class RecordViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHel
         $uid = (int)$this->arguments['uid'];
         $table = (string)$this->arguments['table'];
 
-        return PageRepository::make()->findRaw($uid, $table);
+        return $this->pageRepository->findRaw($uid, $table);
     }
 }

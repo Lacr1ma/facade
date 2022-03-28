@@ -27,7 +27,6 @@ namespace LMS\Facade\Cache;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\StaticCreator;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -37,8 +36,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Manager
 {
-    use StaticCreator;
-
     /**
      * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
      */

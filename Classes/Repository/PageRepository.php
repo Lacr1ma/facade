@@ -27,9 +27,10 @@ namespace LMS\Facade\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\StaticCreator;
 use LMS\Facade\Assist\Collection;
-use LMS\Facade\Extbase\ExtensionHelper;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @psalm-suppress PropertyNotSetInConstructor
@@ -37,7 +38,17 @@ use LMS\Facade\Extbase\ExtensionHelper;
  */
 class PageRepository extends \TYPO3\CMS\Core\Domain\Repository\PageRepository
 {
-    use StaticCreator, ExtensionHelper, CacheQuery, PropertyManagement;
+    use CacheQuery, PropertyManagement;
+
+    private Connection $connection;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('pages');
+    }
 
     public function findByIds(array $uidList): Collection
     {
@@ -55,22 +66,52 @@ class PageRepository extends \TYPO3\CMS\Core\Domain\Repository\PageRepository
         );
     }
 
+    public function findSubPagesGroupedByPid(int $page, string $select = 'uid, pid'): Collection
+    {
+        $dql = <<<DQL
+            SELECT
+                $select
+            FROM
+                (select * from pages) p,
+                (select @pv := ?) i
+            WHERE 
+                find_in_set(pid, @pv) AND 
+                length(@pv := concat(@pv, ',', uid)) AND
+                nav_hide = 0 AND
+                hidden = 0 AND
+                deleted = 0 AND
+                p.sys_language_uid = 0
+            ORDER BY
+                pid, sorting
+        DQL;
+
+        $statement = $this->connection->executeQuery($dql, [$page]);
+
+        return collect($statement->fetchAllAssociative())->groupBy('pid');
+    }
+
     public function findSubPages(int $page): Collection
     {
-        return static::cacheProxy(
-            (function () use ($page) {
-                $result = $this->getMenu($page, 'uid', 'sorting', 'nav_hide = 0');
+        $collection = $this->findSubPagesGroupedByPid($page);
 
-                $uidList = [];
-                foreach ($result as $record) {
-                    $uidList[] = $record['uid'];
-                    $uidList = array_merge($uidList, $this->findSubPages((int)$record['uid'])->toArray());
+        $pages = $collection
+            ->map(function (Collection $pidPages, int $pid) {
+                $pages = $pidPages->pluck('uid')->toArray();
+
+                return [$pid, ...$pages];
+            });
+
+        return $collection
+            ->first()
+            ->pluck('uid')
+            ->map(function (int $uid) use ($pages) {
+                if ($children = $pages->get($uid)) {
+                    return $children;
                 }
 
-                return Collection::make($uidList);
-            }),
-            compact('page')
-        );
+                return $uid;
+            })
+            ->flatten();
     }
 
     public function buildTree(int $startPage): Collection

@@ -26,7 +26,6 @@ namespace LMS\Facade\Cache;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use LMS\Facade\StaticCreator;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use LMS\Facade\Traits\InteractsWithTime;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -37,7 +36,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class RateLimiter
 {
-    use InteractsWithTime, StaticCreator;
+    use InteractsWithTime;
 
     /**
      * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
