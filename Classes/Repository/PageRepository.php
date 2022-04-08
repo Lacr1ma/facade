@@ -80,6 +80,7 @@ class PageRepository extends \TYPO3\CMS\Core\Domain\Repository\PageRepository
                 nav_hide = 0 AND
                 hidden = 0 AND
                 deleted = 0 AND
+                doktype IN (1, 3, 190) AND
                 p.sys_language_uid = 0
             ORDER BY
                 pid, sorting
