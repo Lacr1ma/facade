@@ -29,8 +29,8 @@ namespace LMS\Facade\Repository;
 
 use LMS\Facade\Assist\Collection;
 use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 
 /**
  * @psalm-suppress PropertyNotSetInConstructor
@@ -106,13 +106,27 @@ class PageRepository extends \TYPO3\CMS\Core\Domain\Repository\PageRepository
             ->first()
             ->pluck('uid')
             ->map(function (int $uid) use ($pages) {
-                if ($children = $pages->get($uid)) {
-                    return $children;
-                }
+                return $this->lookupChildrenForPage($uid, $pages);
+            })->flatten();
+    }
 
-                return $uid;
-            })
-            ->flatten();
+    private function lookupChildrenForPage(int $page, Collection $pages)
+    {
+        if ($children = $pages->get($page)) {
+            $result = [];
+
+            foreach ($children as $child) {
+                if ($child !== $page) {
+                    $result[] = $this->lookupChildrenForPage($child, $pages);
+                } else {
+                    $result[] = $page;
+                }
+            }
+
+            return $result;
+        }
+
+        return $page;
     }
 
     public function buildTree(int $startPage): Collection
