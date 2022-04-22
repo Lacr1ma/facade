@@ -74,13 +74,17 @@ class PageRepository extends \TYPO3\CMS\Core\Domain\Repository\PageRepository
 
         $statement = $this->connection->executeQuery($dql, [$page, $lang]);
 
-        return collect($statement->fetchAllAssociative())
-            ->map(static function (array $page) use ($iso) {
+        $pages = collect($statement->fetchAllAssociative());
+
+        if ($lang > 0) {
+            $pages = $pages->map(static function (array $page) use ($iso) {
                 $page['slug'] = $iso  . $page['slug'];
 
                 return $page;
-            })
-            ->groupBy('pid');
+            });
+        }
+
+        return $pages->groupBy('pid');
     }
 
     public function findSubPages(int $page): Collection
