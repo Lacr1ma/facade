@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpUnhandledExceptionInspection */
 
 declare(strict_types = 1);
 
@@ -38,8 +39,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
  */
 class PageRepository extends \TYPO3\CMS\Core\Domain\Repository\PageRepository
 {
-    use CacheQuery, PropertyManagement;
-
     private Connection $connection;
 
     public function __construct()
@@ -50,24 +49,11 @@ class PageRepository extends \TYPO3\CMS\Core\Domain\Repository\PageRepository
             ->getConnectionForTable('pages');
     }
 
-    public function findByIds(array $uidList): Collection
+    public function findSubPagesGroupedByPid(int $page, string $select = 'IF(sys_language_uid = 0, uid, l10n_parent) uid, pid'): Collection
     {
-        return static::cacheProxy(
-            (function () use ($uidList) {
-                $pages = [];
+        $lang = $GLOBALS['TSFE']->language->getLanguageId();
+        $iso = $GLOBALS['TSFE']->language->getTwoLetterIsoCode();
 
-                foreach ($uidList as $uid) {
-                    $pages[] = $this->getPage_noCheck((int)$uid);
-
-                    return Collection::make($pages);
-                }
-            }),
-            compact('uidList')
-        );
-    }
-
-    public function findSubPagesGroupedByPid(int $page, string $select = 'uid, pid'): Collection
-    {
         $dql = <<<DQL
             SELECT
                 $select
@@ -76,19 +62,25 @@ class PageRepository extends \TYPO3\CMS\Core\Domain\Repository\PageRepository
                 (select @pv := ?) i
             WHERE 
                 find_in_set(pid, @pv) AND 
-                length(@pv := concat(@pv, ',', uid)) AND
+                length(@pv := concat(@pv, ',', IF(sys_language_uid = 0, uid, l10n_parent))) AND
                 nav_hide = 0 AND
                 hidden = 0 AND
                 deleted = 0 AND
                 doktype IN (1, 3, 4, 190) AND
-                p.sys_language_uid = 0
+                sys_language_uid = ?
             ORDER BY
                 pid, sorting
         DQL;
 
-        $statement = $this->connection->executeQuery($dql, [$page]);
+        $statement = $this->connection->executeQuery($dql, [$page, $lang]);
 
-        return collect($statement->fetchAllAssociative())->groupBy('pid');
+        return collect($statement->fetchAllAssociative())
+            ->map(static function (array $page) use ($iso) {
+                $page['slug'] = $iso  . $page['slug'];
+
+                return $page;
+            })
+            ->groupBy('pid');
     }
 
     public function findSubPages(int $page): Collection
