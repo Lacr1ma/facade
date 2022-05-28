@@ -60,8 +60,8 @@ class PageRepository extends \TYPO3\CMS\Core\Domain\Repository\PageRepository
             FROM
                 (select * from pages) p,
                 (select @pv := ?) i
-            WHERE 
-                find_in_set(pid, @pv) AND 
+            WHERE
+                find_in_set(pid, @pv) AND
                 length(@pv := concat(@pv, ',', IF(sys_language_uid = 0, uid, l10n_parent))) AND
                 nav_hide = 0 AND
                 hidden = 0 AND
@@ -85,6 +85,205 @@ class PageRepository extends \TYPO3\CMS\Core\Domain\Repository\PageRepository
         }
 
         return $pages->groupBy('pid');
+    }
+
+    public function findSubPagesGroupedByPidMySql8(int $page): array
+    {
+        $lang = $GLOBALS['TSFE']->language->getLanguageId();
+        $iso = $GLOBALS['TSFE']->language->getTwoLetterIsoCode();
+
+        $dql = <<<DQL
+            WITH RECURSIVE cte
+                (uid,pid,title,subtitle,sorting,nav_hide,deleted,hidden,doktype,sys_language_uid,slug,l10n_parent,url)
+            as (
+                SELECT
+                    uid,
+                    pid,
+                    title,
+                    subtitle,
+                    sorting,
+                    nav_hide,
+                    deleted,
+                    hidden,
+                    doktype,
+                    sys_language_uid,
+                    slug,
+                    l10n_parent,
+                    url
+                FROM
+                    pages
+                WHERE
+                    pid = ?
+
+                UNION ALL
+
+                SELECT
+                    p.uid,
+                    p.pid,
+                    p.title,
+                    p.subtitle,
+                    p.sorting,
+                    p.nav_hide,
+                    p.deleted,
+                    p.hidden,
+                    p.doktype,
+                    p.sys_language_uid,
+                    p.slug,
+                    p.l10n_parent,
+                    p.url
+              FROM
+                    pages p
+
+              INNER JOIN cte ON IF(cte.sys_language_uid = 0, cte.uid, cte.l10n_parent) = p.pid
+            )
+
+            SELECT
+                IF(sys_language_uid = 0, uid, l10n_parent) uid,
+                pid,
+                title,
+                subtitle,
+                coalesce(NULLIF(url, ""), slug) slug
+            FROM
+                cte
+            WHERE
+                nav_hide = 0 AND
+                hidden = 0 AND
+                deleted = 0 AND
+                doktype IN (1, 3, 4, 190) AND
+                sys_language_uid = ?
+            ORDER BY
+                pid, sorting
+        DQL;
+        $result = $this->connection->executeQuery($dql, [$page, $lang]);
+
+        $pagesGroupedByPid = [];
+
+        while (($row = $result->fetchAssociative()) !== false) {
+            $record = $row;
+
+            if ($lang > 0) {
+                $record['slug'] .= $iso;
+            }
+            unset($record['pid']);
+
+            $pagesGroupedByPid[$row['pid']][] = $record;
+        }
+
+        $pagesGroupedByPid = array_reverse($pagesGroupedByPid, true);
+        $rootLevel = array_pop($pagesGroupedByPid);
+
+        $data = [];
+        foreach ($rootLevel as $p) {
+            $row = $p;
+            $row['children'] = $this->lookupChildrenForPageMysql8($p['uid'], $pagesGroupedByPid);
+
+            $data[] = $row;
+        }
+
+        return $data;
+    }
+
+    public function queryBreadcrumb(): array
+    {
+        $lang = $GLOBALS['TSFE']->language->getLanguageId();
+        $iso = $GLOBALS['TSFE']->language->getTwoLetterIsoCode();
+
+        $dql = <<<DQL
+            WITH RECURSIVE cte
+                (uid, pid, title, slug, url, nav_hide, deleted, hidden, doktype, sys_language_uid, l10n_parent, level)
+            as (
+                SELECT
+                    uid,
+                    pid,
+                    title,
+                    slug,
+                    url,
+                    nav_hide,
+                    deleted,
+                    hidden,
+                    doktype,
+                    sys_language_uid,
+                    l10n_parent,
+                    1 level
+                FROM
+                    pages
+                WHERE
+                    uid = ?
+
+                UNION ALL
+
+                SELECT
+                    p.uid,
+                    p.pid,
+                    p.title,
+                    p.slug,
+                    p.url,
+                    p.nav_hide,
+                    p.deleted,
+                    p.hidden,
+                    p.doktype,
+                    p.sys_language_uid,
+                    p.l10n_parent,
+                    level + 1
+              FROM
+                    pages p
+
+              INNER JOIN cte ON cte.pid = p.uid
+            )
+
+            SELECT
+                IF(sys_language_uid = 0, uid, l10n_parent) uid,
+                title,
+                coalesce(NULLIF(url, ""), slug) slug
+            FROM
+                cte
+            WHERE
+                nav_hide = 0 AND
+                hidden = 0 AND
+                deleted = 0 AND
+                doktype IN (1, 3, 4, 190) AND
+                sys_language_uid = ?
+            ORDER BY
+                level DESC
+        DQL;
+        $result = $this->connection->executeQuery($dql, [$GLOBALS['TSFE']->id, $lang]);
+
+        if ($lang === 0) {
+            return $result->fetchAllAssociative();
+        }
+
+        $data = [];
+        while (($row = $result->fetchAssociative()) !== false) {
+            $record = $row;
+            $record['slug'] .= $iso;
+
+            $data[] = $record;
+        }
+
+        return $data;
+    }
+
+    private function lookupChildrenForPageMysql8(int $page, array $pages): array
+    {
+        if (!isset($pages[$page])) {
+            return [];
+        }
+
+        if ($children = $pages[$page]) {
+            $result = [];
+
+            foreach ($children as $key => $child) {
+                $result[$key] = $child;
+
+                if ($child['uid'] !== $page) {
+                    $result[$key]['children'] = $this->lookupChildrenForPageMysql8($child['uid'], $pages);
+                }
+            }
+
+            return $result;
+        }
+
+        return [];
     }
 
     public function findSubPages(int $page): Collection
